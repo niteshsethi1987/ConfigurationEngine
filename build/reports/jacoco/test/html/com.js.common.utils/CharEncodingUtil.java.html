@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>CharEncodingUtil.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JsRuleEngine</a> &gt; <a href="index.source.html" class="el_package">com.js.common.utils</a> &gt; <span class="el_source">CharEncodingUtil.java</span></div><h1>CharEncodingUtil.java</h1><pre class="source lang-java linenums">/**
+ *
+ */
+package com.js.common.utils;
+
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+
+/**
+ * @author goutam.mandal
+ */
+public class CharEncodingUtil {
+
+<span class="nc" id="L14">	private CharEncodingUtil() {</span>
+<span class="nc" id="L15">		throw new UnsupportedOperationException(&quot;Utility Class !&quot;);</span>
+	}
+
+	/**
+	 * @param string
+	 * @param fromEncoding
+	 * @param toEncoding
+	 * @return
+	 */
+	public static String convert(String string, Charset fromEncoding, Charset toEncoding) {
+<span class="nc bnc" id="L25" title="All 2 branches missed.">		if (string == null) {</span>
+<span class="nc" id="L26">			return null;</span>
+		}
+<span class="nc" id="L28">		return new String(string.getBytes(fromEncoding), toEncoding);</span>
+	}
+
+	/**
+	 * @param string
+	 * @param charsets Possible charsets
+	 * @return
+	 */
+	public static Charset detectCharset(String string, Charset charsets[]) {
+<span class="nc" id="L37">		Charset probe = StandardCharsets.UTF_8;</span>
+<span class="nc bnc" id="L38" title="All 2 branches missed.">		if (string == null) {</span>
+<span class="nc" id="L39">			return probe;</span>
+		}
+<span class="nc bnc" id="L41" title="All 2 branches missed.">		for (Charset charset : charsets) {</span>
+<span class="nc bnc" id="L42" title="All 4 branches missed.">			if (charset != null &amp;&amp; string.equals(convert(convert(string, charset, probe), probe, charset))) {</span>
+<span class="nc" id="L43">					return charset;</span>
+			}
+		}
+<span class="nc" id="L46">		return probe;</span>
+	}
+
+<span class="nc" id="L49">	private static final Charset POSSIBLE_CHARSETS[] = new Charset[] { StandardCharsets.ISO_8859_1, StandardCharsets.UTF_8 };</span>
+
+	/**
+	 * Will be tested against {@link CharEncodingUtil#POSSIBLE_CHARSETS}
+	 * @param string
+	 * @return
+	 */
+	public static Charset detectCharset(String string) {
+<span class="nc" id="L57">		return detectCharset(string, POSSIBLE_CHARSETS);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

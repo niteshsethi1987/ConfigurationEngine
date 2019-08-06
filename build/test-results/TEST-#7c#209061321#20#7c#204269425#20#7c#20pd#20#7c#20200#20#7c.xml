@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="| 9061321 | 4269425 | pd | 200 |" tests="5" skipped="1" failures="2" errors="0" timestamp="2018-03-16T09:05:33" hostname="host01.localhost.com" time="1.394">
+  <properties/>
+  <testcase name="Given I use the pid 9061321 , ids &quot;4269425&quot;, vt &quot;pd&quot;" classname="| 9061321 | 4269425 | pd | 200 |" time="0.001"/>
+  <testcase name="When I request the api" classname="| 9061321 | 4269425 | pd | 200 |" time="0.0"/>
+  <testcase name="Then I should get a response with HTTP status code 200" classname="| 9061321 | 4269425 | pd | 200 |" time="0.003">
+    <failure message="java.lang.AssertionError: 1 expectation failed.&#10;Expected status code &lt;200&gt; but was &lt;404&gt;.&#10;" type="java.lang.AssertionError">java.lang.AssertionError: 1 expectation failed.
+Expected status code &lt;200&gt; but was &lt;404&gt;.
+
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at org.codehaus.groovy.reflection.CachedConstructor.invoke(CachedConstructor.java:83)
+	at org.codehaus.groovy.reflection.CachedConstructor.doConstructorInvoke(CachedConstructor.java:77)
+	at org.codehaus.groovy.runtime.callsite.ConstructorSite$ConstructorSiteNoUnwrap.callConstructor(ConstructorSite.java:84)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallConstructor(CallSiteArray.java:60)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callConstructor(AbstractCallSite.java:235)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callConstructor(AbstractCallSite.java:247)
+	at io.restassured.internal.ResponseSpecificationImpl$HamcrestAssertionClosure.validate(ResponseSpecificationImpl.groovy:471)
+	at io.restassured.internal.ResponseSpecificationImpl$HamcrestAssertionClosure$validate$1.call(Unknown Source)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:48)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:113)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:125)
+	at io.restassured.internal.ResponseSpecificationImpl.validateResponseIfRequired(ResponseSpecificationImpl.groovy:643)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite$PogoCachedMethodSiteNoUnwrapNoCoerce.invoke(PogoMetaMethodSite.java:210)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite.callCurrent(PogoMetaMethodSite.java:59)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallCurrent(CallSiteArray.java:52)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:154)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:166)
+	at io.restassured.internal.ResponseSpecificationImpl.statusCode(ResponseSpecificationImpl.groovy:122)
+	at io.restassured.specification.ResponseSpecification$statusCode$0.callCurrent(Unknown Source)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallCurrent(CallSiteArray.java:52)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:154)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:166)
+	at io.restassured.internal.ResponseSpecificationImpl.statusCode(ResponseSpecificationImpl.groovy:130)
+	at io.restassured.internal.ValidatableResponseOptionsImpl.statusCode(ValidatableResponseOptionsImpl.java:117)
+	at bdd.steps.APISteps.i_should_get_a_response_with_HTTP_status_code(APISteps.java:48)
+	at ✽.Then I should get a response with HTTP status code 200(bdd/features/bddShowFullProfile.feature:8)
+</failure>
+  </testcase>
+  <testcase name="And response includes the following in any order" classname="| 9061321 | 4269425 | pd | 200 |" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="classMethod" classname="| 9061321 | 4269425 | pd | 200 |" time="15.653">
+    <failure message="java.lang.AssertionError: 1 expectation failed.&#10;Expected status code &lt;200&gt; but was &lt;404&gt;.&#10;" type="java.lang.AssertionError">java.lang.AssertionError: 1 expectation failed.
+Expected status code &lt;200&gt; but was &lt;404&gt;.
+
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at org.codehaus.groovy.reflection.CachedConstructor.invoke(CachedConstructor.java:83)
+	at org.codehaus.groovy.reflection.CachedConstructor.doConstructorInvoke(CachedConstructor.java:77)
+	at org.codehaus.groovy.runtime.callsite.ConstructorSite$ConstructorSiteNoUnwrap.callConstructor(ConstructorSite.java:84)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallConstructor(CallSiteArray.java:60)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callConstructor(AbstractCallSite.java:235)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callConstructor(AbstractCallSite.java:247)
+	at io.restassured.internal.ResponseSpecificationImpl$HamcrestAssertionClosure.validate(ResponseSpecificationImpl.groovy:471)
+	at io.restassured.internal.ResponseSpecificationImpl$HamcrestAssertionClosure$validate$1.call(Unknown Source)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:48)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:113)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:125)
+	at io.restassured.internal.ResponseSpecificationImpl.validateResponseIfRequired(ResponseSpecificationImpl.groovy:643)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite$PogoCachedMethodSiteNoUnwrapNoCoerce.invoke(PogoMetaMethodSite.java:210)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite.callCurrent(PogoMetaMethodSite.java:59)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallCurrent(CallSiteArray.java:52)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:154)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:166)
+	at io.restassured.internal.ResponseSpecificationImpl.statusCode(ResponseSpecificationImpl.groovy:122)
+	at io.restassured.specification.ResponseSpecification$statusCode$0.callCurrent(Unknown Source)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallCurrent(CallSiteArray.java:52)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:154)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:166)
+	at io.restassured.internal.ResponseSpecificationImpl.statusCode(ResponseSpecificationImpl.groovy:130)
+	at io.restassured.internal.ValidatableResponseOptionsImpl.statusCode(ValidatableResponseOptionsImpl.java:117)
+	at bdd.steps.APISteps.i_should_get_a_response_with_HTTP_status_code(APISteps.java:48)
+	at ✽.Then I should get a response with HTTP status code 200(bdd/features/bddShowFullProfile.feature:8)
+</failure>
+  </testcase>
+  <system-out><![CDATA[14:35:19.577 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating CacheAwareContextLoaderDelegate from class [org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate]
+14:35:19.629 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating BootstrapContext using constructor [public org.springframework.test.context.support.DefaultBootstrapContext(java.lang.Class,org.springframework.test.context.CacheAwareContextLoaderDelegate)]
+14:35:19.695 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating TestContextBootstrapper for test class [bdd.steps.APISteps] from class [org.springframework.boot.test.context.SpringBootTestContextBootstrapper]
+14:35:19.742 [Test worker] DEBUG org.springframework.test.context.support.AbstractContextLoader - Did not detect default resource location for test class [com.js.profile.services.ApplicationFeatureTest]: class path resource [com/js/profile/services/ApplicationFeatureTest-context.xml] does not exist
+14:35:19.743 [Test worker] DEBUG org.springframework.test.context.support.AbstractContextLoader - Did not detect default resource location for test class [com.js.profile.services.ApplicationFeatureTest]: class path resource [com/js/profile/services/ApplicationFeatureTestContext.groovy] does not exist
+14:35:19.744 [Test worker] INFO org.springframework.test.context.support.AbstractContextLoader - Could not detect default resource locations for test class [com.js.profile.services.ApplicationFeatureTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+14:35:19.840 [Test worker] DEBUG org.springframework.test.context.support.ActiveProfilesUtils - Could not find an 'annotation declaring class' for annotation type [org.springframework.test.context.ActiveProfiles] and class [bdd.steps.APISteps]
+14:35:19.884 [Test worker] DEBUG org.springframework.boot.test.context.SpringBootTestContextBootstrapper - @TestExecutionListeners is not present for class [bdd.steps.APISteps]: using defaults.
+14:35:19.889 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener]
+14:35:19.907 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Could not instantiate TestExecutionListener [org.springframework.test.context.transaction.TransactionalTestExecutionListener]. Specify custom listener classes or make the default listener classes (and their required dependencies) available. Offending class: [org/springframework/transaction/TransactionDefinition]
+14:35:19.908 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Could not instantiate TestExecutionListener [org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener]. Specify custom listener classes or make the default listener classes (and their required dependencies) available. Offending class: [org/springframework/transaction/interceptor/TransactionAttribute]
+14:35:19.914 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@12962f6f, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@2beceb75, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@2431be57, org.springframework.test.context.support.DirtiesContextTestExecutionListener@5e5cab65, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@7d921a96, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@3169e112, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@1803226e, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@23bfb588, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@4e145dc3, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@300b5462]
+14:35:20.019 [Test worker] DEBUG org.springframework.core.env.StandardEnvironment - Adding [systemProperties] PropertySource with lowest search precedence
+14:35:20.020 [Test worker] DEBUG org.springframework.core.env.StandardEnvironment - Adding [systemEnvironment] PropertySource with lowest search precedence
+14:35:20.020 [Test worker] DEBUG org.springframework.core.env.StandardEnvironment - Initialized StandardEnvironment with PropertySources [systemProperties,systemEnvironment]
+14:35:20.022 [Test worker] DEBUG org.springframework.test.context.support.TestPropertySourceUtils - Adding inlined properties to environment: {spring.jmx.enabled=false, org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true, server.port=0}
+14:35:20.023 [Test worker] DEBUG org.springframework.core.env.StandardEnvironment - Adding [Inlined Test Properties] PropertySource with highest search precedence
+
+      _     ___           ____ __   
+     (_)__ / _ \_______  / _(_) /__ 
+    / (_-</ ___/ __/ _ \/ _/ / / -_)
+ __/ /___/_/  /_/  \___/_//_/_/\__/ 
+|___/                               
+
+                                                            
+
+ 
+Ver: 
+
+14:35:20.804 [Test worker] INFO  bdd.steps.APISteps.logStarting(48) -  - Starting APISteps on host01.localhost.com with PID 24250 (started by ashok in /projects/js-apps/JsRuleEngine)
+14:35:20.809 [Test worker] INFO  bdd.steps.APISteps.logStartupProfileInfo(593) -  - No active profile set, falling back to default profiles: default
+14:35:21.317 [Test worker] INFO  o.s.b.c.e.AnnotationConfigEmbeddedWebApplicationContext.prepareRefresh(583) -  - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@5ab9a9cf: startup date [Fri Mar 16 14:35:21 IST 2018]; root of context hierarchy
+14:35:21.528 [background-preinit] INFO  o.h.validator.internal.util.Version.<clinit>(30) -  - HV000001: Hibernate Validator 5.3.5.Final
+14:35:26.267 [Test worker] INFO  org.eclipse.jetty.util.log.initialized(192) -  - Logging initialized @8894ms to org.eclipse.jetty.util.log.Slf4jLog
+14:35:26.559 [Test worker] INFO  o.s.b.c.e.j.JettyEmbeddedServletContainerFactory.getEmbeddedServletContainer(176) -  - Server initialized with port: 0
+14:35:26.580 [Test worker] INFO  org.eclipse.jetty.server.Server.doStart(372) -  - jetty-9.4.6.v20170531
+14:35:26.859 [Test worker] INFO  org.eclipse.jetty.server.session.doStart(364) -  - DefaultSessionIdManager workerName=node0
+14:35:26.861 [Test worker] INFO  org.eclipse.jetty.server.session.doStart(369) -  - No SessionScavenger set, using defaults
+14:35:26.866 [Test worker] INFO  org.eclipse.jetty.server.session.startScavenging(149) -  - Scavenging every 660000ms
+14:35:26.877 [Test worker] INFO  o.e.j.s.h.ContextHandler.application.log(2221) -  - Initializing Spring embedded WebApplicationContext
+14:35:26.878 [Test worker] INFO  o.s.web.context.ContextLoader.prepareEmbeddedWebApplicationContext(276) -  - Root WebApplicationContext: initialization completed in 5561 ms
+14:35:27.371 [Test worker] INFO  o.s.b.w.s.ServletRegistrationBean.onStartup(190) -  - Mapping servlet: 'dispatcherServlet' to [/]
+14:35:27.377 [Test worker] INFO  o.s.b.w.s.FilterRegistrationBean.configure(258) -  - Mapping filter: 'metricsFilter' to: [/*]
+14:35:27.378 [Test worker] INFO  o.s.b.w.s.FilterRegistrationBean.configure(258) -  - Mapping filter: 'characterEncodingFilter' to: [/*]
+14:35:27.379 [Test worker] INFO  o.s.b.w.s.FilterRegistrationBean.configure(258) -  - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+14:35:27.379 [Test worker] INFO  o.s.b.w.s.FilterRegistrationBean.configure(258) -  - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+14:35:27.380 [Test worker] INFO  o.s.b.w.s.FilterRegistrationBean.configure(258) -  - Mapping filter: 'requestContextFilter' to: [/*]
+14:35:27.381 [Test worker] INFO  o.s.b.w.s.FilterRegistrationBean.configure(258) -  - Mapping filter: 'threadLoggingFilterBean' to: [/*]
+14:35:27.382 [Test worker] INFO  o.s.b.w.s.FilterRegistrationBean.configure(258) -  - Mapping filter: 'responseTimeAdvice' to: [/*]
+14:35:27.383 [Test worker] INFO  o.s.b.w.s.FilterRegistrationBean.configure(258) -  - Mapping filter: 'requestIdFilter' to: [/*]
+14:35:27.384 [Test worker] INFO  o.s.b.w.s.FilterRegistrationBean.configure(258) -  - Mapping filter: 'webRequestLoggingFilter' to: [/*]
+14:35:27.385 [Test worker] INFO  o.s.b.w.s.FilterRegistrationBean.configure(258) -  - Mapping filter: 'applicationContextIdFilter' to: [/*]
+14:35:27.393 [Test worker] INFO  o.e.j.server.handler.ContextHandler.doStart(788) -  - Started o.s.b.c.e.j.JettyEmbeddedWebAppContext@3f579e59{/,[file:///tmp/jetty-docbase.4766916419273360170.0/, jar:file:/home/ashok/.gradle/caches/modules-2/files-2.1/io.springfox/springfox-swagger-ui/2.0.2/d282bd0c0321614206438942246ed850ee5ecde9/springfox-swagger-ui-2.0.2.jar!/META-INF/resources],AVAILABLE}
+14:35:27.423 [Test worker] INFO  n.r.s.b.l.a.LogbackAccessContext.configureWithCauseThrowing(149) -  - Configured the Logback-access: context=[default], config=[classpath:logback-access.xml]
+14:35:27.426 [Test worker] INFO  org.eclipse.jetty.server.Server.doStart(444) -  - Started @10054ms
+14:35:28.079 [Test worker] INFO  c.js.profile.services.ProfileService.init(25) -  - ====== Loading  ProfileService =====
+14:35:28.080 [Test worker] INFO  c.js.profile.services.ProfileService.loadProfileV1(37) -  - ====== Loading osProfileV1 =====
+14:35:28.889 [Test worker] INFO  o.e.j.s.h.ContextHandler.application.log(2221) -  - jolokia: No access restrictor found, access to any MBean is allowed
+14:35:29.135 [Test worker] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping.register(543) -  - Mapped "{[/jsprofile/v1/profiles],methods=[GET]}" onto public orchestrator.ServiceResponse com.js.profile.services.ProfileController.getProfiles(java.lang.Integer,java.lang.String,java.lang.Boolean,java.lang.Boolean,java.lang.Integer,java.lang.String,java.util.Set<java.lang.String>,java.lang.String,java.util.Set<java.lang.String>,java.lang.Boolean)
+14:35:29.139 [Test worker] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping.register(543) -  - Mapped "{[/v2/api-docs],methods=[GET]}" onto public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String)
+14:35:29.143 [Test worker] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping.register(543) -  - Mapped "{[/configuration/security]}" onto org.springframework.http.ResponseEntity<springfox.documentation.swagger.web.SecurityConfiguration> springfox.documentation.swagger.web.ApiResourceController.securityConfiguration()
+14:35:29.144 [Test worker] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping.register(543) -  - Mapped "{[/configuration/ui]}" onto org.springframework.http.ResponseEntity<springfox.documentation.swagger.web.UiConfiguration> springfox.documentation.swagger.web.ApiResourceController.uiConfiguration()
+14:35:29.145 [Test worker] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping.register(543) -  - Mapped "{[/swagger-resources]}" onto org.springframework.http.ResponseEntity<java.util.List<springfox.documentation.swagger.web.SwaggerResource>> springfox.documentation.swagger.web.ApiResourceController.swaggerResources()
+14:35:29.150 [Test worker] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping.register(543) -  - Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+14:35:29.151 [Test worker] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping.register(543) -  - Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+14:35:29.697 [Test worker] INFO  o.s.w.s.m.m.a.RequestMappingHandlerAdapter.initControllerAdviceCache(534) -  - Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@5ab9a9cf: startup date [Fri Mar 16 14:35:21 IST 2018]; root of context hierarchy
+14:35:29.712 [Test worker] INFO  o.s.w.s.m.m.a.RequestMappingHandlerAdapter.initControllerAdviceCache(566) -  - Detected ResponseBodyAdvice bean in responseTimeAdvice
+14:35:29.868 [Test worker] INFO  o.s.w.s.h.SimpleUrlHandlerMapping.registerHandler(362) -  - Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+14:35:29.869 [Test worker] INFO  o.s.w.s.h.SimpleUrlHandlerMapping.registerHandler(362) -  - Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+14:35:29.915 [Test worker] INFO  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver.initExceptionHandlerAdviceCache(279) -  - Detected ResponseBodyAdvice implementation in responseTimeAdvice
+14:35:29.916 [Test worker] INFO  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver.initExceptionHandlerAdviceCache(273) -  - Detected @ExceptionHandler methods in controllerExceptionHandlerAdvice
+14:35:29.964 [Test worker] INFO  o.s.w.s.h.SimpleUrlHandlerMapping.registerHandler(362) -  - Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+14:35:30.863 [Test worker] INFO  o.s.b.c.e.AnnotationConfigEmbeddedWebApplicationContext.prepareRefresh(583) -  - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@12d4df51: startup date [Fri Mar 16 14:35:30 IST 2018]; parent: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@5ab9a9cf
+14:35:30.946 [Test worker] INFO  o.s.b.f.s.DefaultListableBeanFactory.registerBeanDefinition(828) -  - Overriding bean definition for bean 'handlerExceptionResolver' with a different definition: replacing [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.web.servlet.config.annotation.DelegatingWebMvcConfiguration; factoryMethodName=handlerExceptionResolver; initMethodName=null; destroyMethodName=(inferred); defined in org.springframework.web.servlet.config.annotation.DelegatingWebMvcConfiguration] with [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=endpointWebMvcChildContextConfiguration; factoryMethodName=compositeHandlerExceptionResolver; initMethodName=null; destroyMethodName=(inferred); defined in org.springframework.boot.actuate.autoconfigure.EndpointWebMvcChildContextConfiguration]
+14:35:31.114 [Test worker] INFO  o.s.b.c.e.j.JettyEmbeddedServletContainerFactory.getEmbeddedServletContainer(176) -  - Server initialized with port: 18292
+14:35:31.115 [Test worker] INFO  org.eclipse.jetty.server.Server.doStart(372) -  - jetty-9.4.6.v20170531
+14:35:31.120 [Test worker] INFO  org.eclipse.jetty.server.session.doStart(364) -  - DefaultSessionIdManager workerName=node0
+14:35:31.120 [Test worker] INFO  org.eclipse.jetty.server.session.doStart(369) -  - No SessionScavenger set, using defaults
+14:35:31.121 [Test worker] INFO  org.eclipse.jetty.server.session.startScavenging(149) -  - Scavenging every 600000ms
+14:35:31.123 [Test worker] INFO  o.e.j.s.h.ContextHandler.application.log(2221) -  - Initializing Spring embedded WebApplicationContext
+14:35:31.124 [Test worker] INFO  o.s.web.context.ContextLoader.prepareEmbeddedWebApplicationContext(276) -  - Root WebApplicationContext: initialization completed in 261 ms
+14:35:31.132 [Test worker] INFO  o.s.b.w.s.ServletRegistrationBean.onStartup(190) -  - Mapping servlet: 'dispatcherServlet' to [/]
+14:35:31.134 [Test worker] INFO  o.e.j.server.handler.ContextHandler.doStart(788) -  - Started o.s.b.c.e.j.JettyEmbeddedWebAppContext@475ac13c{/,[file:///tmp/jetty-docbase.3443322947120767749.18292/, jar:file:/home/ashok/.gradle/caches/modules-2/files-2.1/io.springfox/springfox-swagger-ui/2.0.2/d282bd0c0321614206438942246ed850ee5ecde9/springfox-swagger-ui-2.0.2.jar!/META-INF/resources],AVAILABLE}
+14:35:31.136 [Test worker] INFO  org.eclipse.jetty.server.Server.doStart(444) -  - Started @13764ms
+14:35:31.389 [Test worker] INFO  o.s.w.s.m.m.a.RequestMappingHandlerAdapter.initControllerAdviceCache(534) -  - Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@12d4df51: startup date [Fri Mar 16 14:35:30 IST 2018]; parent: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@5ab9a9cf
+14:35:31.416 [Test worker] INFO  o.s.w.s.m.m.a.RequestMappingHandlerAdapter.initControllerAdviceCache(566) -  - Detected ResponseBodyAdvice bean in responseTimeAdvice
+14:35:31.421 [Test worker] INFO  o.s.w.s.m.m.a.RequestMappingHandlerAdapter.initControllerAdviceCache(566) -  - Detected ResponseBodyAdvice bean in org.springframework.boot.actuate.autoconfigure.EndpointWebMvcHypermediaManagementContextConfiguration$ActuatorEndpointLinksAdvice
+14:35:31.545 [Test worker] INFO  o.s.b.a.e.mvc.EndpointHandlerMapping.register(543) -  - Mapped "{[/beans || /beans.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+14:35:31.550 [Test worker] INFO  o.s.b.a.e.mvc.EndpointHandlerMapping.register(543) -  - Mapped "{[/loggers/{name:.*}],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.LoggersMvcEndpoint.get(java.lang.String)
+14:35:31.552 [Test worker] INFO  o.s.b.a.e.mvc.EndpointHandlerMapping.register(543) -  - Mapped "{[/loggers/{name:.*}],methods=[POST],consumes=[application/vnd.spring-boot.actuator.v1+json || application/json],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.LoggersMvcEndpoint.set(java.lang.String,java.util.Map<java.lang.String, java.lang.String>)
+14:35:31.555 [Test worker] INFO  o.s.b.a.e.mvc.EndpointHandlerMapping.register(543) -  - Mapped "{[/loggers || /loggers.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+14:35:31.558 [Test worker] INFO  o.s.b.a.e.mvc.EndpointHandlerMapping.register(543) -  - Mapped "{[/logfile || /logfile.json],methods=[GET || HEAD]}" onto public void org.springframework.boot.actuate.endpoint.mvc.LogFileMvcEndpoint.invoke(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse) throws javax.servlet.ServletException,java.io.IOException
+14:35:31.562 [Test worker] INFO  o.s.b.a.e.mvc.EndpointHandlerMapping.register(543) -  - Mapped "{[/trace || /trace.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+14:35:31.567 [Test worker] INFO  o.s.b.a.e.mvc.EndpointHandlerMapping.register(543) -  - Mapped "{[/dump || /dump.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+14:35:31.571 [Test worker] INFO  o.s.b.a.e.mvc.EndpointHandlerMapping.register(543) -  - Mapped "{[/metrics/{name:.*}],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.MetricsMvcEndpoint.value(java.lang.String)
+14:35:31.573 [Test worker] INFO  o.s.b.a.e.mvc.EndpointHandlerMapping.register(543) -  - Mapped "{[/metrics || /metrics.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+14:35:31.575 [Test worker] INFO  o.s.b.a.e.mvc.EndpointHandlerMapping.register(543) -  - Mapped "{[/auditevents || /auditevents.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public org.springframework.http.ResponseEntity<?> org.springframework.boot.actuate.endpoint.mvc.AuditEventsMvcEndpoint.findByPrincipalAndAfterAndType(java.lang.String,java.util.Date,java.lang.String)
+14:35:31.577 [Test worker] INFO  o.s.b.a.e.mvc.EndpointHandlerMapping.register(543) -  - Mapped "{[/jolokia/**]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.actuate.endpoint.mvc.JolokiaMvcEndpoint.handle(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse) throws java.lang.Exception
+14:35:31.579 [Test worker] INFO  o.s.b.a.e.mvc.EndpointHandlerMapping.register(543) -  - Mapped "{[/actuator || /actuator.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public org.springframework.hateoas.ResourceSupport org.springframework.boot.actuate.endpoint.mvc.HalJsonMvcEndpoint.links()
+14:35:31.581 [Test worker] INFO  o.s.b.a.e.mvc.EndpointHandlerMapping.register(543) -  - Mapped "{[/info || /info.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+14:35:31.584 [Test worker] INFO  o.s.b.a.e.mvc.EndpointHandlerMapping.register(543) -  - Mapped "{[/env/{name:.*}],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EnvironmentMvcEndpoint.value(java.lang.String)
+14:35:31.584 [Test worker] INFO  o.s.b.a.e.mvc.EndpointHandlerMapping.register(543) -  - Mapped "{[/env || /env.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+14:35:31.587 [Test worker] INFO  o.s.b.a.e.mvc.EndpointHandlerMapping.register(543) -  - Mapped "{[/heapdump || /heapdump.json],methods=[GET],produces=[application/octet-stream]}" onto public void org.springframework.boot.actuate.endpoint.mvc.HeapdumpMvcEndpoint.invoke(boolean,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse) throws java.io.IOException,javax.servlet.ServletException
+14:35:31.588 [Test worker] INFO  o.s.b.a.e.mvc.EndpointHandlerMapping.register(543) -  - Mapped "{[/health || /health.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.HealthMvcEndpoint.invoke(javax.servlet.http.HttpServletRequest,java.security.Principal)
+14:35:31.590 [Test worker] INFO  o.s.b.a.e.mvc.EndpointHandlerMapping.register(543) -  - Mapped "{[/autoconfig || /autoconfig.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+14:35:31.591 [Test worker] INFO  o.s.b.a.e.mvc.EndpointHandlerMapping.register(543) -  - Mapped "{[/configprops || /configprops.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+14:35:31.593 [Test worker] INFO  o.s.b.a.e.mvc.EndpointHandlerMapping.register(543) -  - Mapped "{[/mappings || /mappings.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+14:35:31.599 [Test worker] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping.register(543) -  - Mapped "{[/error]}" onto public java.util.Map<java.lang.String, java.lang.Object> org.springframework.boot.actuate.endpoint.mvc.ManagementErrorEndpoint.invoke()
+14:35:31.625 [Test worker] INFO  o.s.w.s.h.SimpleUrlHandlerMapping.registerHandler(362) -  - Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+14:35:31.626 [Test worker] INFO  o.s.w.s.h.SimpleUrlHandlerMapping.registerHandler(362) -  - Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+14:35:31.756 [Test worker] INFO  com.js.core.ThreadLoggingInitializer.handleContextRefresh(35) -  - ThreadLogging support initialized
+14:35:31.757 [Test worker] INFO  c.j.c.s.ApplicationStartupListener.onContextRefreshedEvent(52) -  - ContextRefreshedEvent -- START
+14:35:31.757 [Test worker] INFO  c.j.c.s.ApplicationStartupListener.onContextRefreshedEvent(54) -  - ContextRefreshedEvent -- END
+14:35:31.759 [Test worker] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper.onApplicationEvent(81) -  - Context refreshed
+14:35:31.808 [Test worker] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper.onApplicationEvent(83) -  - Found {0} custom documentation plugin(s)
+14:35:31.822 [Test worker] INFO  s.d.s.w.s.ApiListingReferenceScanner.scan(54) -  - Scanning for api listing references
+14:35:31.836 [Test worker] INFO  s.d.s.w.ClassOrApiAnnotationResourceGrouping.getResourceGroups(69) -  - Group for method getProfiles was profile
+14:35:31.840 [Test worker] INFO  s.d.s.w.s.ApiListingReferenceScanner.scan(72) -  - Request mapping: getProfiles belongs to groups: [[ResourceGroup{groupName='profile', position=0, controller=com.js.profile.services.ProfileController}]] 
+14:35:31.843 [Test worker] INFO  s.d.s.w.ClassOrApiAnnotationResourceGrouping.getResourceGroups(69) -  - Group for method errorHtml was basic-error-controller
+14:35:31.844 [Test worker] INFO  s.d.s.w.s.ApiListingReferenceScanner.scan(72) -  - Request mapping: errorHtml belongs to groups: [[ResourceGroup{groupName='basic-error-controller', position=0, controller=org.springframework.boot.autoconfigure.web.BasicErrorController}]] 
+14:35:31.845 [Test worker] INFO  s.d.s.w.ClassOrApiAnnotationResourceGrouping.getResourceGroups(69) -  - Group for method error was basic-error-controller
+14:35:31.845 [Test worker] INFO  s.d.s.w.s.ApiListingReferenceScanner.scan(72) -  - Request mapping: error belongs to groups: [[ResourceGroup{groupName='basic-error-controller', position=0, controller=org.springframework.boot.autoconfigure.web.BasicErrorController}]] 
+14:35:31.851 [Test worker] INFO  s.d.s.w.s.ApiListingReferenceScanner.scan(85) -  - Created resource listing Path: /default/profile Description: profile Position: 0
+14:35:31.853 [Test worker] INFO  s.d.s.w.s.ApiListingReferenceScanner.scan(85) -  - Created resource listing Path: /default/basic-error-controller Description: basic-error-controller Position: 0
+14:35:32.094 [Test worker] INFO  s.d.s.w.ClassOrApiAnnotationResourceGrouping.getResourceGroups(69) -  - Group for method getProfiles was profile
+14:35:32.239 [Test worker] INFO  s.d.s.w.ClassOrApiAnnotationResourceGrouping.getResourceGroups(69) -  - Group for method errorHtml was basic-error-controller
+14:35:32.244 [Test worker] INFO  s.d.s.w.ClassOrApiAnnotationResourceGrouping.getResourceGroups(69) -  - Group for method errorHtml was basic-error-controller
+14:35:32.274 [Test worker] INFO  s.d.s.w.ClassOrApiAnnotationResourceGrouping.getResourceGroups(69) -  - Group for method errorHtml was basic-error-controller
+14:35:32.283 [Test worker] INFO  s.d.s.w.ClassOrApiAnnotationResourceGrouping.getResourceGroups(69) -  - Group for method errorHtml was basic-error-controller
+14:35:32.289 [Test worker] INFO  s.d.s.w.ClassOrApiAnnotationResourceGrouping.getResourceGroups(69) -  - Group for method errorHtml was basic-error-controller
+14:35:32.297 [Test worker] INFO  s.d.s.w.ClassOrApiAnnotationResourceGrouping.getResourceGroups(69) -  - Group for method errorHtml was basic-error-controller
+14:35:32.305 [Test worker] INFO  s.d.s.w.ClassOrApiAnnotationResourceGrouping.getResourceGroups(69) -  - Group for method errorHtml was basic-error-controller
+14:35:32.312 [Test worker] INFO  s.d.s.w.ClassOrApiAnnotationResourceGrouping.getResourceGroups(69) -  - Group for method errorHtml was basic-error-controller
+14:35:32.319 [Test worker] INFO  s.d.s.w.ClassOrApiAnnotationResourceGrouping.getResourceGroups(69) -  - Group for method error was basic-error-controller
+14:35:32.328 [Test worker] INFO  s.d.s.w.ClassOrApiAnnotationResourceGrouping.getResourceGroups(69) -  - Group for method error was basic-error-controller
+14:35:32.332 [Test worker] INFO  s.d.s.w.ClassOrApiAnnotationResourceGrouping.getResourceGroups(69) -  - Group for method error was basic-error-controller
+14:35:32.338 [Test worker] INFO  s.d.s.w.ClassOrApiAnnotationResourceGrouping.getResourceGroups(69) -  - Group for method error was basic-error-controller
+14:35:32.341 [Test worker] INFO  s.d.s.w.ClassOrApiAnnotationResourceGrouping.getResourceGroups(69) -  - Group for method error was basic-error-controller
+14:35:32.346 [Test worker] INFO  s.d.s.w.ClassOrApiAnnotationResourceGrouping.getResourceGroups(69) -  - Group for method error was basic-error-controller
+14:35:32.354 [Test worker] INFO  s.d.s.w.ClassOrApiAnnotationResourceGrouping.getResourceGroups(69) -  - Group for method error was basic-error-controller
+14:35:32.357 [Test worker] INFO  s.d.s.w.ClassOrApiAnnotationResourceGrouping.getResourceGroups(69) -  - Group for method error was basic-error-controller
+14:35:32.384 [Test worker] INFO  o.e.j.s.h.ContextHandler.application.log(2221) -  - Initializing Spring FrameworkServlet 'dispatcherServlet'
+14:35:32.385 [Test worker] INFO  o.s.web.servlet.DispatcherServlet.initServletBean(489) -  - FrameworkServlet 'dispatcherServlet': initialization started
+14:35:32.417 [Test worker] INFO  o.s.web.servlet.DispatcherServlet.initServletBean(508) -  - FrameworkServlet 'dispatcherServlet': initialization completed in 31 ms
+14:35:32.508 [Test worker] INFO  o.e.jetty.server.AbstractConnector.doStart(280) -  - Started ServerConnector@1b85c738{HTTP/1.1,[http/1.1]}{0.0.0.0:18292}
+14:35:32.515 [Test worker] INFO  o.s.b.c.e.j.JettyEmbeddedServletContainer.start(155) -  - Jetty started on port(s) 18292 (http/1.1)
+14:35:32.532 [Test worker] INFO  com.js.core.ThreadLoggingInitializer.handleContextRefresh(35) -  - ThreadLogging support initialized
+14:35:32.532 [Test worker] INFO  c.j.c.s.ApplicationStartupListener.onContextRefreshedEvent(52) -  - ContextRefreshedEvent -- START
+14:35:32.539 [Test worker] INFO  c.j.c.s.ApplicationStartupListener.onContextRefreshedEvent(54) -  - ContextRefreshedEvent -- END
+14:35:32.582 [Test worker] INFO  o.e.j.s.h.ContextHandler.application.log(2221) -  - Initializing Spring FrameworkServlet 'dispatcherServlet'
+14:35:32.582 [Test worker] INFO  o.s.web.servlet.DispatcherServlet.initServletBean(489) -  - FrameworkServlet 'dispatcherServlet': initialization started
+14:35:32.605 [Test worker] INFO  o.s.web.servlet.DispatcherServlet.initServletBean(508) -  - FrameworkServlet 'dispatcherServlet': initialization completed in 22 ms
+14:35:32.606 [Test worker] INFO  o.e.jetty.server.AbstractConnector.doStart(280) -  - Started ServerConnector@4a3fe18e{HTTP/1.1,[http/1.1]}{0.0.0.0:37549}
+14:35:32.607 [Test worker] INFO  o.s.b.c.e.j.JettyEmbeddedServletContainer.start(155) -  - Jetty started on port(s) 37549 (http/1.1)
+14:35:32.619 [Test worker] INFO  c.j.c.s.ApplicationStartupListener.onApplicationReadyEvent(107) -  - ApplicationReadyEvent -- START
+14:35:32.623 [Test worker] INFO  c.j.c.s.ApplicationStartupListener.onApplicationReadyEvent(109) -  - ApplicationReadyEvent -- END
+14:35:32.625 [Test worker] INFO  bdd.steps.APISteps.logStarted(57) -  - Started APISteps in 12.598 seconds (JVM running for 15.253)
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

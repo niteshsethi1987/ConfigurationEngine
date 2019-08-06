@@ -1,0 +1,25 @@
+package rules.profile.incomplete
+ 
+import com.js.ruleengine.domains.JsProfile
+import com.js.ruleengine.domains.JsPgProfile
+import com.js.ruleengine.domains.JsPogProfile
+import java.util.ArrayList;
+
+rule "Mark loggedInProfile as deleted"
+	when 
+		pgObject : JsPgProfile(getField("bi", "activated") == "D")
+		pogObject: JsPogProfile()
+	then
+		pogObject.markPgProfileDeleted();
+		drools.halt();
+	end
+/*
+rule "Mark loggedInProfile as incomplete"
+	when 
+		pgObject : JsPgProfile(getField("bi", "incomplete") == true)
+		pogObject: JsPogProfile()
+	then
+		pogObject.markPgProfileIncomplete();
+		drools.halt();
+	end
+*/

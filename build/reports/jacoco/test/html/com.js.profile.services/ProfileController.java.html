@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ProfileController.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JsRuleEngine</a> &gt; <a href="index.source.html" class="el_package">com.js.profile.services</a> &gt; <span class="el_source">ProfileController.java</span></div><h1>ProfileController.java</h1><pre class="source lang-java linenums">package com.js.profile.services;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
+import java.util.Set;
+
+import orchestrator.ServiceRequest;
+import orchestrator.ServiceResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.js.constants.RequestParams;
+import com.js.constants.ViewType;
+import com.js.core.ControllerExceptionHandlerAdvice;
+
+/**
+ * Validation and uncaught exceptions handled by {@link ControllerExceptionHandlerAdvice}
+ * @author Esha / goutam.mandal
+ *
+ */
+// @RefreshScope
+@CrossOrigin
+@Api(value = &quot;Profile&quot;, description = &quot;Operations pertaining to Profile&quot;)
+@ComponentScan({ &quot;com&quot;, &quot;com.*&quot;, &quot;com.js.db.repo.*&quot; })
+@RestController
+@RequestMapping(&quot;/jsprofile&quot;)
+<span class="fc" id="L36">public class ProfileController {</span>
+
+	@Autowired
+	protected ProfileService	profileService;
+
+	@CrossOrigin
+	@ApiOperation(value = &quot;Get details of profile(s)&quot;)
+	@RequestMapping(value = &quot;/v1/profiles&quot;, method = RequestMethod.GET)
+	public ServiceResponse getProfiles(
+			@RequestHeader(value = &quot;JB-Profile-Identifier&quot;, defaultValue = &quot;&quot;, required = false) Integer pid,
+			@RequestHeader(value = &quot;JB-Profile-Identifier-Authchecksum&quot;, defaultValue = &quot;&quot;, required = false) String authChecksum,
+			@RequestHeader(value = &quot;JB-Raw-Data&quot;, defaultValue = &quot;false&quot;, required = false) Boolean outputFormatFlag,
+			@RequestHeader(value = &quot;JB-Internal&quot;, defaultValue = &quot;false&quot;, required = false) Boolean jbInternal,
+			@RequestHeader(value = &quot;JS-Bucket&quot;, defaultValue = &quot;0&quot;, required = false) Integer abBucket,
+			@RequestHeader(value = &quot;User-Agent&quot;, defaultValue = &quot;false&quot;, required = false) String userAgent,
+
+			@ApiParam(name = &quot;pfids&quot;, value = &quot;The Profile Ids to be viewed&quot;, required = true)
+			@RequestParam(value = &quot;pfids&quot;, required = true) Set&lt;String&gt; pfids,
+
+			@ApiParam(name = &quot;view&quot;, value = &quot;Type of view, like shortview, basic, vcard&quot;, defaultValue = ViewType.SUPER, required = false)
+			@RequestParam(value = &quot;view&quot;, defaultValue = ViewType.SUPER, required = false) String viewType,
+
+			@ApiParam(name = &quot;fl&quot;, defaultValue = &quot;&quot;, required = false)
+			@RequestParam(value = &quot;fl&quot;, defaultValue = &quot;&quot;, required = false) Set&lt;String&gt; filters,
+
+			@ApiParam(name = &quot;sk&quot;, defaultValue = &quot;false&quot;, required = false)
+			@RequestParam(value = &quot;sk&quot;, defaultValue = &quot;false&quot;, required = false) Boolean shortKey
+	) {
+<span class="nc" id="L64">		ServiceRequest request = new ServiceRequest();</span>
+
+//		request.setReqParamData(RequestParams.PID, pid);
+//		request.setReqHeaderData(RequestParams.AUTHCHECKSUM, authChecksum);
+//		request.setReqHeaderData(RequestParams.OUTPUT_FORMAT_FLAG, outputFormatFlag);
+//		request.setReqHeaderData(RequestParams.JB_INTERNAL, jbInternal);
+//		request.setReqHeaderData(RequestParams.USER_AGENT, userAgent);
+//		request.setReqHeaderData(RequestParams.AB_FLAG, abBucket);
+//
+//		request.setReqParamData(RequestParams.PROFILE_IDS, pfids);
+//		request.setReqParamData(RequestParams.VIEW_TYPE, viewType);
+//		request.setReqParamData(RequestParams.FILTERS, filters);
+//		request.setReqParamData(RequestParams.SHORT_KEY, shortKey);
+
+<span class="nc" id="L78">		return profileService.getOsSelectProfileV1().doActivities(request);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

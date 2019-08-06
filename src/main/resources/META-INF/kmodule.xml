@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kmodule xmlns="http://jboss.org/kie/6.0.0/kmodule" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <kbase name="profile-view" packages="rules.profile.showphoto,rules.profile.dppmatcher,rules.profile.horoprivacy,rules.profile.incomplete,rules.profile.location,rules.profile.nameofuser,rules.profile.oldyourinfo,rules.profile.phoneVerify,rules.profile.screening,rules.profile.show,rules.profile.lastloginlabel,rules.profile.dp,rules.contact.ButtonCalculator,rules.profile.checkonline" includes="self-complusory-view">
+		<ksession name="profile-view-session" />
+	</kbase>
+	
+	<kbase name="self-complusory-view" packages="rules.profile.incomplete,rules.profile.phoneVerify">
+		<ksession name="self-complusory-view-session" />		
+	</kbase>
+		
+</kmodule>

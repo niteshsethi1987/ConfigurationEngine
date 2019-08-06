@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>DropLogEventFilter.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JsRuleEngine</a> &gt; <a href="index.source.html" class="el_package">com.js.common.utils</a> &gt; <span class="el_source">DropLogEventFilter.java</span></div><h1>DropLogEventFilter.java</h1><pre class="source lang-java linenums">/**
+ * 
+ */
+package com.js.common.utils;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.filter.Filter;
+import ch.qos.logback.core.spi.FilterReply;
+
+/**
+ * @author goutam.mandal
+ *
+ */
+public class DropLogEventFilter extends Filter&lt;ILoggingEvent&gt; {
+
+<span class="nc" id="L19">	private Map&lt;String, Integer&gt; errorCount = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L20">	private Integer threshold = 2;</span>
+
+	public DropLogEventFilter() {
+<span class="nc" id="L23">		super();</span>
+<span class="nc" id="L24">		errorCount.put(&quot;REDIS_AWAY_LOGGER&quot;, 0);</span>
+<span class="nc" id="L25">	}</span>
+
+	@Override
+	public FilterReply decide(ILoggingEvent event) {
+<span class="nc bnc" id="L29" title="All 2 branches missed.">		if (!isStarted()) {</span>
+<span class="nc" id="L30">			return FilterReply.NEUTRAL;</span>
+		}
+
+<span class="nc" id="L33">		String loggerName = event.getLoggerName();</span>
+<span class="nc bnc" id="L34" title="All 2 branches missed.">		if (errorCount.containsKey(loggerName)) {</span>
+<span class="nc" id="L35">			Integer currentCount = errorCount.get(loggerName);</span>
+<span class="nc bnc" id="L36" title="All 2 branches missed.">			if (currentCount &gt; threshold) {</span>
+<span class="nc" id="L37">				errorCount.put(loggerName, 0);</span>
+<span class="nc" id="L38">				return FilterReply.DENY;</span>
+			}
+<span class="nc" id="L40">			errorCount.put(loggerName, ++currentCount);</span>
+<span class="nc" id="L41">			return FilterReply.NEUTRAL;</span>
+		}
+<span class="nc" id="L43">		return FilterReply.NEUTRAL;</span>
+	}
+
+	public void addLogger(String logger) {
+<span class="nc" id="L47">		errorCount.put(logger, 0);</span>
+<span class="nc" id="L48">	}</span>
+
+	public void setThreshold(Integer threshold) {
+<span class="nc" id="L51">		this.threshold = threshold;</span>
+<span class="nc" id="L52">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

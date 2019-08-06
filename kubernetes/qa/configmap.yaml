@@ -1,0 +1,17 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  namespace: "jsruleengine-qa"
+  name: jsruleengine-v1-config
+  labels:
+    name: main-applicatoin-config
+    team: all
+    environment: "qa"
+data:
+  service.profile.url: "http://192.168.225.70:31160"
+  aerospike.hosts: "192.168.225.19"
+  aerospike.ports: "3000"
+  service.membership.url: "http://192.168.225.70:31006"
+  service.contact.url: "http://192.168.225.70:31140"
+  service.auth.url: "http://192.168.225.70:31130"
+  service.presence.url: "https://192.168.225.70:31150"

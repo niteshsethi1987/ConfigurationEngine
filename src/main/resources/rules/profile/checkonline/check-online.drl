@@ -1,0 +1,46 @@
+package rules.profile.checkonline
+ 
+import com.js.ruleengine.domains.JsProfile
+import com.js.ruleengine.domains.JsPogProfile
+import com.js.ruleengine.domains.JsPgProfile
+import com.js.ruleengine.domains.JsContact
+
+rule "checkonline flag default " salience -99
+    when 		 
+		pogProfile  : JsPogProfile()					     	   
+	then
+		pogProfile.addOrUpdateField(true,"checkOnlineFlag");		
+	end
+		
+rule "checkonline flag 1" salience -100
+	when 
+		pogProfile  : JsPogProfile()		 
+		JsContact (getField("state") == "C" ||  == "RC" || == "D" ||  == "RD")					     	   
+	then
+		pogProfile.addOrUpdateField(false,"checkOnlineFlag");		
+	end	
+
+rule "checkonline flag2" salience -100
+	when
+	    pogProfile  : JsPogProfile() 		 
+		JsContact ((getField("state") != "RI" && != "A" && != "RA" && != "D" && != "C"))		
+		JsPogProfile((getField("fl", "age") == true && age: getDppMatchStatus("age") == 0) 
+				|| (getField("fl", "mstatus") == true && mstatus: getDppMatchStatus("mstatus") == 0)
+				|| (getField("fl", "religion") == true && religion: getDppMatchStatus("religion") == 0)
+				|| (getField("fl", "caste") == true && caste: getDppMatchStatus("caste") == 0)
+				|| (getField("fl", "countryRes") == true && country: getDppMatchStatus("country") == 0)
+				|| (getField("fl", "cityRes") == true && state: getDppMatchStatus("stateCity") == 0)
+				|| (getField("fl", "mtongue") == true && mtongue: getDppMatchStatus("mtongue") == 0)
+				|| (getField("fl", "income") == true && income: getDppMatchStatus("income") == 0)
+			)	     	    
+	then		
+		pogProfile.addOrUpdateField(false,"checkOnlineFlag");
+	end
+	
+rule "checkonline flag3" salience -100
+	when
+		pogProfile  : JsPogProfile() 		 
+		contactObject: JsContact(getField("pgBlDt") != null)
+	then		
+		pogProfile.addOrUpdateField(false,"checkOnlineFlag");
+	end

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>MapSerializer.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JsRuleEngine</a> &gt; <a href="index.source.html" class="el_package">com.js.common.utils</a> &gt; <span class="el_source">MapSerializer.java</span></div><h1>MapSerializer.java</h1><pre class="source lang-java linenums">/**
+ *
+ */
+package com.js.common.utils;
+
+import java.lang.reflect.Type;
+import java.util.List;
+import java.util.Map;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
+/**
+ * @author goutam.mandal
+ *
+ */
+public class MapSerializer implements Serializer&lt;Map&lt;?, ?&gt;&gt; {
+
+	private JsonSerializer 	jsonSerializer;
+	private Gson			gson;
+
+<span class="nc" id="L23">	private static final FieldNameFormat DEFAULT_FIELD_FORMAT = FieldNameFormat.CAMEL_CASE;</span>
+<span class="nc" id="L24">	private static final NullPolicy DEFAULT_NULL_POLICY = NullPolicy.OMIT_FIELD;</span>
+
+	public MapSerializer() {
+<span class="nc" id="L27">		this(null, DEFAULT_FIELD_FORMAT, DEFAULT_NULL_POLICY);</span>
+<span class="nc" id="L28">	}</span>
+
+	public MapSerializer(List&lt;String&gt; fieldList) {
+<span class="nc" id="L31">		this(fieldList, DEFAULT_FIELD_FORMAT, DEFAULT_NULL_POLICY);</span>
+<span class="nc" id="L32">	}</span>
+
+	public MapSerializer(FieldNameFormat fieldNameFormat) {
+<span class="nc" id="L35">		this(null, fieldNameFormat, DEFAULT_NULL_POLICY);</span>
+<span class="nc" id="L36">	}</span>
+
+	public MapSerializer(FieldNameFormat fieldNameFormat, NullPolicy nullPolicy) {
+<span class="nc" id="L39">		this(null, fieldNameFormat, nullPolicy);</span>
+<span class="nc" id="L40">	}</span>
+
+	public MapSerializer(List&lt;String&gt; fieldList, FieldNameFormat fieldNameFormat) {
+<span class="nc" id="L43">		this(fieldList, fieldNameFormat, DEFAULT_NULL_POLICY);</span>
+<span class="nc" id="L44">	}</span>
+
+<span class="nc" id="L46">	public MapSerializer(List&lt;String&gt; fieldList, FieldNameFormat fieldNameFormat, NullPolicy nullPolicy) {</span>
+<span class="nc" id="L47">		this.jsonSerializer = new JsonSerializer(fieldList, fieldNameFormat, nullPolicy);</span>
+
+<span class="nc" id="L49">		GsonBuilder gsonBuilder = new GsonBuilder();</span>
+<span class="nc" id="L50">		gsonBuilder.setDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);</span>
+<span class="nc" id="L51">		this.gson = gsonBuilder.create();</span>
+<span class="nc" id="L52">	}</span>
+
+	@Override
+	public Map&lt;String, Object&gt; serialize(Object object) {
+<span class="nc" id="L56">		Type type = new TypeToken&lt;Map&lt;String, Object&gt;&gt;() {</span>
+<span class="nc" id="L57">		}.getType();</span>
+<span class="nc" id="L58">		return gson.fromJson(jsonSerializer.serialize(object), type);</span>
+	}
+
+	@Override
+	public &lt;T&gt; T deserialize(Map&lt;?, ?&gt; map, Class&lt;? extends T&gt; clazz) {
+<span class="nc bnc" id="L63" title="All 4 branches missed.">		if (map == null || map.isEmpty()) {</span>
+<span class="nc" id="L64">			return null;</span>
+		}
+<span class="nc" id="L66">		return jsonSerializer.deserialize(gson.toJson(map), clazz);</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

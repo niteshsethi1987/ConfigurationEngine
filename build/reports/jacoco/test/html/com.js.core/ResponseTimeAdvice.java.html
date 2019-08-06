@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ResponseTimeAdvice.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JsRuleEngine</a> &gt; <a href="index.source.html" class="el_package">com.js.core</a> &gt; <span class="el_source">ResponseTimeAdvice.java</span></div><h1>ResponseTimeAdvice.java</h1><pre class="source lang-java linenums">/**
+ *
+ */
+package com.js.core;
+
+import java.io.IOException;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import orchestrator.ServiceResponse;
+
+import org.springframework.core.MethodParameter;
+import org.springframework.core.annotation.Order;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.server.ServerHttpRequest;
+import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
+
+/**
+ * This advice intercepts response from controllers returning
+ * {@link ServiceResponse} and adds the total processing time (in ms) taken for
+ * delivering the response. The filter is used to mark the start of processing.
+ * 
+ * @author goutam.mandal
+ *
+ */
+@Order(20)
+@RestControllerAdvice(&quot;com.js.profile.services&quot;)
+<span class="fc" id="L35">public class ResponseTimeAdvice extends OncePerRequestFilter implements ResponseBodyAdvice&lt;ServiceResponse&gt; {</span>
+
+<span class="fc" id="L37">	private ThreadLocal&lt;Long&gt; startTime = new ThreadLocal&lt;&gt;();</span>
+
+	@Override
+	public boolean supports(MethodParameter returnType, Class&lt;? extends HttpMessageConverter&lt;?&gt;&gt; converterType) {
+<span class="nc" id="L41">		return true;</span>
+	}
+
+	@Override
+	public ServiceResponse beforeBodyWrite(ServiceResponse body, MethodParameter returnType,
+			MediaType selectedContentType, Class&lt;? extends HttpMessageConverter&lt;?&gt;&gt; selectedConverterType,
+			ServerHttpRequest request, ServerHttpResponse response) {
+<span class="nc" id="L48">		int elapsedTime = -1;</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">		if (startTime.get() != null) {</span>
+<span class="nc" id="L50">			elapsedTime = (int) (System.currentTimeMillis() - startTime.get());</span>
+		}
+<span class="nc" id="L52">		body.getHeader().setResponseTime(elapsedTime);</span>
+<span class="nc" id="L53">		return body;</span>
+	}
+
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+			throws ServletException, IOException {
+
+<span class="pc bpc" id="L60" title="1 of 2 branches missed.">		if (startTime.get() == null) {</span>
+<span class="fc" id="L61">			startTime.set(System.currentTimeMillis());</span>
+		}
+
+		try {
+<span class="fc" id="L65">			filterChain.doFilter(request, response);</span>
+		} finally {
+<span class="pc" id="L67">			startTime.remove();</span>
+<span class="fc" id="L68">		}</span>
+<span class="fc" id="L69">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

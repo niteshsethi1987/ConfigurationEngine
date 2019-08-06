@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>RequestIdFilter.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JsRuleEngine</a> &gt; <a href="index.source.html" class="el_package">com.js.core</a> &gt; <span class="el_source">RequestIdFilter.java</span></div><h1>RequestIdFilter.java</h1><pre class="source lang-java linenums">/**
+ *
+ */
+package com.js.core;
+
+import java.io.IOException;
+import java.util.UUID;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
+
+import lombok.extern.slf4j.Slf4j;
+
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.MDC;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+
+/**
+ * Filter to generate request id if not present
+ * @author goutam.mandal
+ *
+ */
+<span class="fc" id="L30">@Slf4j</span>
+@Order(30)
+@Component
+@WebFilter(urlPatterns = &quot;/jsprofile/*&quot;, description = &quot;Set request id in MDC&quot;)
+<span class="fc" id="L34">public class RequestIdFilter implements Filter {</span>
+
+	@Override
+	public void init(FilterConfig filterConfig) throws ServletException {
+		// Nothing to do
+<span class="fc" id="L39">	}</span>
+
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response,
+			FilterChain chain) throws IOException, ServletException {
+
+<span class="fc" id="L45">		String requestId = ((HttpServletRequest) request).getHeader(&quot;JS-Request-Id&quot;);</span>
+<span class="pc bpc" id="L46" title="1 of 2 branches missed.">		if (StringUtils.isEmpty(requestId)) {</span>
+<span class="nc" id="L47">			requestId = UUID.randomUUID().toString();</span>
+<span class="nc" id="L48">			log.warn(&quot;Request Id not passed. {} is genertaing requestId {}&quot;, RequestIdFilter.class.getSimpleName(), requestId);</span>
+		}
+
+<span class="fc" id="L51">		MDC.put(&quot;requestId&quot;, requestId);</span>
+
+		try {
+<span class="fc" id="L54">			chain.doFilter(request, response);</span>
+		}
+		finally {
+<span class="pc" id="L57">			MDC.remove(&quot;requestId&quot;);</span>
+<span class="fc" id="L58">		}</span>
+<span class="fc" id="L59">	}</span>
+
+	@Override
+	public void destroy() {
+		// Nothing to do
+<span class="nc" id="L64">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

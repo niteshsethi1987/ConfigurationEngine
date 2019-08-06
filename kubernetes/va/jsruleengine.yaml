@@ -1,0 +1,28 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: jsruleengine-v1-deployment
+  namespace: "js-va"
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: jsruleengine
+        deployversion: "v1"
+        infra-app-version: "jsruleengine-v1"
+    spec:
+      nodeSelector:
+            js: "true"
+      containers:
+      - name: jsruleengine
+        image: dockerjs.infoedge.com:5000/jsruleengine-va:v1
+        envFrom:
+        - configMapRef:
+            name: jsruleengine-v1-config
+        ports:
+        - containerPort: 8790
+          protocol: TCP
+        imagePullPolicy: Always  
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst

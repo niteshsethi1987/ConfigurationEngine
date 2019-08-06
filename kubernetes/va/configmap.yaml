@@ -1,0 +1,17 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  namespace: "js-va"
+  name: jsruleengine-v1-config
+  labels:
+    name: main-applicatoin-config
+    team: all
+    environment: "va"
+data:
+  service.profile.url: "http://192.168.225.73:31260"
+  aerospike.hosts: "192.168.225.21"
+  aerospike.ports: "3000"
+  service.membership.url: "http://192.168.225.73:31206"
+  service.contact.url: "http://192.168.225.73:31240"
+  service.auth.url: "http://192.168.225.73:31230"
+  service.presence.url: "http://192.168.225.73:31250"

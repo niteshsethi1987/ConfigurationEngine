@@ -1,0 +1,475 @@
+package rules.profile.location
+
+import static com.js.ruleengine.constants.DppIncomeMapping.*
+import com.js.ruleengine.domains.JsPgProfile 
+import com.js.ruleengine.domains.JsPogProfile
+import java.util.List
+
+rule "DPP Set Default Values" salience 101
+lock-on-active true
+	when
+		pogProfile: JsPogProfile()
+	then
+		pogProfile.addDppMatchStatus("age",-1);
+		pogProfile.addDppMatchStatus("height",-1);
+		pogProfile.addDppMatchStatus("haveChild",-1);
+		pogProfile.addDppMatchStatus("country",-1);
+		pogProfile.addDppMatchStatus("challenged",-1);
+		pogProfile.addDppMatchStatus("manglik",-1);
+		pogProfile.addDppMatchStatus("bodyType",-1);
+		pogProfile.addDppMatchStatus("complexion",-1);
+		pogProfile.addDppMatchStatus("dietaryHabit",-1);
+		pogProfile.addDppMatchStatus("drinkingHabit",-1);
+		pogProfile.addDppMatchStatus("mstatus",-1);
+		pogProfile.addDppMatchStatus("residentialStatus",-1);
+		pogProfile.addDppMatchStatus("smokingHabit",-1);
+		pogProfile.addDppMatchStatus("caste",-1);
+		pogProfile.addDppMatchStatus("religion",-1);
+		pogProfile.addDppMatchStatus("highestEducation",-1);
+		pogProfile.addDppMatchStatus("mtongue",-1);
+		pogProfile.addDppMatchStatus("occupation",-1);
+		pogProfile.addDppMatchStatus("income",-1);
+		pogProfile.addDppMatchStatus("stateCity",-1);		
+	end
+
+rule "DPP Age Matching Rule - Positive" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(pgData: getField("bi", "age"))
+		pogProfile: JsPogProfile(pogH: getField("di", "hage"), pogL: getField("di", "lage"))
+		Integer (this != 0) from pogH 		
+		Integer (this != 0) from pogL
+		Integer (this <= pogH, this >= pogL) from pgData
+	then
+		pogProfile.addDppMatchStatus("age", 1);
+		//update (pogProfile);
+	end
+	
+rule "DPP Age Matching Rule - Negative" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(pgData: getField("bi", "age"))
+		pogProfile: JsPogProfile(pogH: getField("di", "hage"), pogL: getField("di", "lage"))
+		Integer (this != 0) from pogH 		
+		Integer (this != 0) from pogL
+		Integer (this > pogH || this < pogL) from pgData
+	then
+		pogProfile.addDppMatchStatus("age", 0);
+		//System.out.println(pgData);
+		//update (pogProfile);
+	end
+	
+rule "DPP Height Matching Rule - Positive" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(pgData: getField("bi", "height"))
+		pogProfile: JsPogProfile(pogH: getField("di", "hheight"), pogL: getField("di", "lheight"))
+		Integer (this <= pogH, this >= pogL) from pgData
+	then
+		pogProfile.addDppMatchStatus("height", 1);
+		//update (pogProfile);
+	end
+	
+rule "DPP Height Matching Rule - Negative" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(pgData: getField("bi", "height"))
+		pogProfile: JsPogProfile(pogH: getField("di", "hheight"), pogL: getField("di", "lheight"))
+		Integer (this != 0) from pogH 		
+		Integer (this != 0) from pogL
+		Integer (this > pogH || this < pogL) from pgData
+	then
+		pogProfile.addDppMatchStatus("height", 0);
+		//update (pogProfile);
+	end
+	
+rule "DPP MStatus Matching Rule - Positive" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(pgData: getField("bi", "mstatus"))
+		pogProfile: JsPogProfile(pogDataList: getField("di", "partnerMstatus"), pogDataList contains pgData)
+	then
+		pogProfile.addDppMatchStatus("mstatus", 1);
+		//update (pogProfile);
+	end
+
+rule "DPP MStatus Matching Rule - Negative" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(pgData: getField("bi", "mstatus"))
+		pogProfile: JsPogProfile(pogDataList: getField("di", "partnerMstatus"), pogDataList != null, pogDataList != "", ((List) pogDataList).isEmpty() != true, pogDataList not contains pgData)
+	then
+		pogProfile.addDppMatchStatus("mstatus", 0);
+		//update (pogProfile);
+	end
+	
+rule "DPP HaveChild Matching Rule - Positive" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(pgData: getField("bi", "havechild"))
+		pogProfile: JsPogProfile(pogDataList: getField("di", "children"), pogDataList contains pgData)
+	then
+		pogProfile.addDppMatchStatus("haveChild", 1);
+		//update (pogProfile);
+	end
+
+rule "DPP HaveChild Matching Rule - Negative" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(pgData: getField("bi", "havechild"))
+		pogProfile: JsPogProfile(pogDataList: getField("di", "children"), pogDataList != null, pogDataList != "", ((List) pogDataList).isEmpty() != true, pogDataList not contains pgData)
+	then
+		pogProfile.addDppMatchStatus("haveChild", 0);
+		//update (pogProfile);
+	end
+	
+// native country, countryRes
+rule "DPP Country Matching Rule - Positive" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(countryRes: getField("lo", "countryRes"))
+		pogProfile: JsPogProfile(pogDataList: getField("di", "partnerCountryres"), pogDataList contains countryRes)
+	then
+		pogProfile.addDppMatchStatus("country", 1);
+		//update (pogProfile);
+	end
+
+rule "DPP Country Matching Rule - Negative" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(countryRes: getField("lo", "countryRes"))
+		pogProfile: JsPogProfile(pogDataList: getField("di", "partnerCountryres"), pogDataList != null, pogDataList != "", ((List) pogDataList).isEmpty() != true, pogDataList not contains countryRes)
+	then
+		pogProfile.addDppMatchStatus("country", 0);
+		//update (pogProfile);
+	end
+
+// dpp - partnerCityres, state
+// pg - cityRes, stateRes, native city, native state 
+rule "DPP StateCity Matching Rule - Positive" salience 100
+lock-on-active true
+	when
+		//pgProfile : JsPgProfile(nCity: getField("lo", "nci"), nState: getField("lo", "nst"), cityRes: getField("lo", "cr"), stateRes: getField("lo", "st"), nCountry: getField("lo", "nco"), countryRes: getField("lo", "country"))
+		//pogProfile: JsPogProfile(pogCity: getField("di", "cr"), pogState: getField("di", "st"), (((cityRes == "DEOT" || nCity == "DEOT") && pogCity contains "DE00") || (nCountry == 51 && pogCity contains nCity) || pogCity contains cityRes || (nCountry == 51 && pogState contains nState) || pogState contains stateRes))
+		pgProfile : JsPgProfile(nCity: getField("lo", "nativeCity"), nState: getField("lo", "nativeState"), cityRes: getField("lo", "cityRes"), stateRes: getField("lo", "stateRes"))
+		pogProfile: JsPogProfile(pogCity: getField("di", "partnerCityres"), pogState: getField("di", "state"), (((cityRes == "DEOT" || nCity == "DEOT") && pogCity contains "DE00") || pogCity contains nCity || pogCity contains cityRes || pogState contains nState || pogState contains stateRes))
+	then		
+		/*System.out.println("nCity" + nCity);
+		System.out.println("nState" + nState);
+		System.out.println("cityRes" + cityRes);
+		System.out.println("stateRes" + stateRes);
+		System.out.println("pogCity" + pogCity);
+		System.out.println("pogState" + pogState);*/
+		pogProfile.addDppMatchStatus("stateCity", 1);
+		//update (pogProfile);
+	end
+
+rule "DPP StateCity Matching Rule - Negative" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(nCity: getField("lo", "nativeCity"), nState: getField("lo", "nativeCity"), cityRes: getField("lo", "cityRes"), stateRes: getField("lo", "stateRes"))
+		pogProfile: JsPogProfile(pogCity: getField("di", "partnerCityres"), pogState: getField("di", "state"), !((cityRes == "DEOT" || nCity == "DEOT") && pogCity contains "DE00"), pogCity not contains nCity, pogCity not contains cityRes, pogState not contains nState, pogState not contains stateRes)
+		JsPogProfile(getField("di", "partnerCityres") != null || getField("di", "state") != null)
+	then
+		/*System.out.println("nCity" + nCity);
+		System.out.println("nState" + nState);
+		System.out.println("cityRes" + cityRes);
+		System.out.println("stateRes" + stateRes);
+		System.out.println("pogCity" + pogCity);
+		System.out.println("pogState" + pogState);*/
+		pogProfile.addDppMatchStatus("stateCity", 0);
+		//update (pogProfile);
+	end
+
+rule "DPP Religion Matching Rule - Positive" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(pgData: getField("bi", "religion"))
+		pogProfile: JsPogProfile(pogDataList: getField("di", "partnerReligion"), pogDataList contains pgData)
+	then
+		pogProfile.addDppMatchStatus("religion", 1);
+		//update (pogProfile);
+	end
+
+rule "DPP Religion Matching Rule - Negative" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(pgData: getField("bi", "religion"))
+		pogProfile: JsPogProfile(pogDataList: getField("di", "partnerReligion"), pogDataList != null, pogDataList != "", ((List) pogDataList).isEmpty() != true, pogDataList not contains pgData)
+	then
+		pogProfile.addDppMatchStatus("religion", 0);
+		//update (pogProfile);
+	end
+
+rule "DPP Caste Matching Rule - Positive" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(pgData: getField("bi", "caste"))
+		pogProfile: JsPogProfile(pogDataList: getField("di", "partnerCasteResolved"), pogDataList contains pgData)
+	then
+		pogProfile.addDppMatchStatus("caste", 1);
+		//update (pogProfile);
+	end
+
+rule "DPP Caste Matching Rule - Negative" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(pgData: getField("bi", "caste"))
+		pogProfile: JsPogProfile(pogDataList: getField("di", "partnerCasteResolved"), pogDataList != null, pogDataList != "", ((List) pogDataList).isEmpty() != true, pogDataList not contains pgData)
+	then
+		pogProfile.addDppMatchStatus("caste", 0);
+		//update (pogProfile);
+	end
+	
+rule "DPP MTongue Matching Rule - Positive" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(pgData: getField("bi", "mtongue"))
+		pogProfile: JsPogProfile(pogDataList: getField("di", "partnerMtongue"), pogDataList contains pgData)
+	then
+		pogProfile.addDppMatchStatus("mtongue", 1);
+		//update (pogProfile);
+	end
+
+rule "DPP MTongue Matching Rule - Negative" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(pgData: getField("bi", "mtongue"))
+		pogProfile: JsPogProfile(pogDataList: getField("di", "partnerMtongue"), pogDataList != null, pogDataList != "", ((List) pogDataList).isEmpty() != true, pogDataList not contains pgData)
+	then
+		pogProfile.addDppMatchStatus("mtongue", 0);
+		//update (pogProfile);
+	end
+		
+rule "DPP Manglik Matching Rule - Positive" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(pgData: getField("ai", "manglik"))
+		pogProfile: JsPogProfile(pogDataList: getField("di", "partnerManglik"), pogDataList contains pgData)
+	then
+		pogProfile.addDppMatchStatus("manglik", 1);
+		//update (pogProfile);
+	end
+
+rule "DPP Manglik Matching Rule - Negative" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(pgData: getField("ai", "manglik"))
+		pogProfile: JsPogProfile(pogDataList: getField("di", "partnerManglik"), pogDataList != null, pogDataList != "", ((List) pogDataList).isEmpty() != true, pogDataList not contains pgData)
+	then
+		/*
+		System.out.println(pogDataList);
+		System.out.println(pgData);
+		*/
+		pogProfile.addDppMatchStatus("manglik", 0);
+		//update (pogProfile);
+	end
+
+// ugDegree, pgDegree, eduLevelNew
+rule "DPP Highest Education Matching Rule - Positive" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(ugDegree: getField("ei", "ugDegree"), pgDegree: getField("ei", "pgDegree"), eduLevel: getField("ei", "eduLevelNew"))
+		pogProfile: JsPogProfile(pogDataList: getField("di", "partnerElevelNew"), (pogDataList contains pgDegree || pogDataList contains ugDegree || pogDataList contains eduLevel))
+	then
+		pogProfile.addDppMatchStatus("highestEducation", 1);
+		//update (pogProfile);
+	end
+
+rule "DPP Highest Education Matching Rule - Negative" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(ugDegree: getField("ei", "ugDegree"), pgDegree: getField("ei", "pgDegree"), eduLevel: getField("ei", "eduLevelNew"))
+		pogProfile: JsPogProfile(pogDataList: getField("di", "partnerElevelNew"), pogDataList != null, pogDataList != "", ((List) pogDataList).isEmpty() != true, pogDataList not contains pgDegree, pogDataList not contains ugDegree, pogDataList not contains eduLevel)
+	then
+		pogProfile.addDppMatchStatus("highestEducation", 0);
+		//update (pogProfile);
+	end
+	
+rule "DPP Occupation Matching Rule - Positive" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(pgData: getField("ca", "occupation"))
+		pogProfile: JsPogProfile(pogDataList: getField("di", "partnerOcc"), pogDataList contains pgData)
+	then
+		pogProfile.addDppMatchStatus("occupation", 1);
+		//update (pogProfile);
+	end
+
+rule "DPP Occupation Matching Rule - Negative" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(pgData: getField("ca", "occupation"))
+		pogProfile: JsPogProfile(pogDataList: getField("di", "partnerOcc"), pogDataList != null, pogDataList != "", ((List) pogDataList).isEmpty() != true, pogDataList not contains pgData)
+	then
+		pogProfile.addDppMatchStatus("occupation", 0);
+		//update (pogProfile);
+	end
+
+rule "DPP Income Matching Rule - Positive" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(pgIncome: getField("bi", "income"))
+		pogProfile: JsPogProfile(lIncomeDol: getField("di", "lincomeDol"), lIncomeRs: getField("di", "lincome"), pogDataList: getField("di", "partnerIncome"), pogDataList != null, pogDataList != "", ((List) pogDataList).isEmpty() != true, eval(isAllowedDppIncome((Integer) pgIncome, (List) pogDataList, (String) lIncomeDol, (String) lIncomeRs)))
+	then
+		pogProfile.addDppMatchStatus("income", 1);
+		//update (pogProfile);
+	end
+
+rule "DPP Income Matching Rule - Negative" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(pgIncome: getField("bi", "income"))
+		pogProfile: JsPogProfile(lIncomeDol: getField("di", "lincomeDol"), lIncomeRs: getField("di", "lincome"), pogDataList: getField("di", "partnerIncome"), pogDataList != null, pogDataList != "", ((List) pogDataList).isEmpty() != true, pogDataList not contains pgIncome, eval(!isAllowedDppIncome((Integer) pgIncome, (List) pogDataList, (String) lIncomeDol, (String) lIncomeRs)))
+	then
+		pogProfile.addDppMatchStatus("income", 0);
+		//update (pogProfile);
+	end
+
+rule "DPP Dietary Matching Rule - Positive" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(pgData: getField("li", "diet"))
+		pogProfile: JsPogProfile(pogDataList: getField("di", "partnerDiet"), pogDataList contains pgData)
+	then
+		pogProfile.addDppMatchStatus("dietaryHabit", 1);
+		//update (pogProfile);
+	end
+
+rule "DPP Dietary Matching Rule - Negative" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(pgData: getField("li", "diet"))
+		pogProfile: JsPogProfile(pogDataList: getField("di", "partnerDiet"), pogDataList != null, pogDataList != "", ((List) pogDataList).isEmpty() != true, pogDataList not contains pgData)
+	then
+		pogProfile.addDppMatchStatus("dietaryHabit", 0);
+		//update (pogProfile);
+	end
+	
+rule "DPP Drinking Matching Rule - Positive" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(pgData: getField("li", "drink"))
+		pogProfile: JsPogProfile(pogDataList: getField("di", "partnerDrink"), pogDataList contains pgData)
+	then
+		pogProfile.addDppMatchStatus("drinkingHabit", 1);
+		//update (pogProfile);
+	end
+
+rule "DPP Drinking Matching Rule - Negative" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(pgData: getField("li", "drink"))
+		pogProfile: JsPogProfile(pogDataList: getField("di", "partnerDrink"), pogDataList != null, pogDataList != "", ((List) pogDataList).isEmpty() != true, pogDataList not contains pgData)
+	then
+		pogProfile.addDppMatchStatus("drinkingHabit", 0);
+		//update (pogProfile);
+	end
+	
+rule "DPP Smoking Matching Rule - Positive" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(pgData: getField("li", "smoke"))
+		pogProfile: JsPogProfile(pogDataList: getField("di", "partnerSmoke"), pogDataList contains pgData)
+	then
+		pogProfile.addDppMatchStatus("smokingHabit", 1);
+		//update (pogProfile);
+	end
+
+rule "DPP Smoking Matching Rule - Negative" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(pgData: getField("li", "smoke"))
+		pogProfile: JsPogProfile(pogDataList: getField("di", "partnerSmoke"), pogDataList != null, pogDataList != null, pogDataList != "", ((List) pogDataList).isEmpty() != true, pogDataList not contains pgData)
+	then
+		pogProfile.addDppMatchStatus("smokingHabit", 0);
+		//update (pogProfile);
+	end
+	
+rule "DPP Complexion Matching Rule - Positive" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(pgData: getField("bi", "complexion"))
+		pogProfile: JsPogProfile(pogDataList: getField("di", "partnerComp"), pogDataList contains pgData)
+	then
+		pogProfile.addDppMatchStatus("complexion", 1);
+		//update (pogProfile);
+	end
+
+rule "DPP Complexion Matching Rule - Negative" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(pgData: getField("bi", "complexion"))
+		pogProfile: JsPogProfile(pogDataList: getField("di", "partnerComp"), pogDataList != null, pogDataList != "", ((List) pogDataList).isEmpty() != true, pogDataList not contains pgData)
+	then
+		pogProfile.addDppMatchStatus("complexion", 0);
+		//update (pogProfile);
+	end
+	
+rule "DPP BodyType Matching Rule - Positive" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(pgData: getField("bi", "btype"))
+		pogProfile: JsPogProfile(pogDataList: getField("di", "partnerBtype"), pogDataList contains pgData)
+	then
+		pogProfile.addDppMatchStatus("bodyType", 1);
+		//update (pogProfile);
+	end
+
+rule "DPP BodyType Matching Rule - Negative" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(pgData: getField("bi", "btype"))
+		pogProfile: JsPogProfile(pogDataList: getField("di", "partnerBtype"), pogDataList != null, pogDataList != "", ((List) pogDataList).isEmpty() != true, pogDataList not contains pgData)
+	then
+		pogProfile.addDppMatchStatus("bodyType", 0);
+		//update (pogProfile);
+	end
+	
+rule "DPP Physically Challenged Matching Rule - Positive" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(pgData: getField("bi", "handicapped"))
+		pogProfile: JsPogProfile(pogDataList: getField("di", "handicapped"), pogDataList contains pgData)
+	then
+		pogProfile.addDppMatchStatus("challenged", 1);
+		//update (pogProfile);
+	end
+
+rule "DPP Physically Challenged Matching Rule - Negative" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(pgData: getField("bi", "handicapped"))
+		pogProfile: JsPogProfile(pogDataList: getField("di", "handicapped"), pogDataList != null, pogDataList != "", ((List) pogDataList).isEmpty() != true, pogDataList not contains pgData)
+	then
+		pogProfile.addDppMatchStatus("challenged", 0);
+		//update (pogProfile);
+	end
+	
+rule "DPP Residential Status Matching Rule - Positive" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(pgData: getField("bi", "resStatus"))
+		pogProfile: JsPogProfile(pogDataList: getField("di", "partnerResStatus"), pogDataList contains pgData)
+	then
+		pogProfile.addDppMatchStatus("residentialStatus", 1);
+		//update (pogProfile);
+	end
+
+rule "DPP Residential Status Matching Rule - Negative" salience 100
+lock-on-active true
+	when
+		pgProfile : JsPgProfile(pgData: getField("bi", "resStatus"))
+		pogProfile: JsPogProfile(pogDataList: getField("di", "partnerResStatus"), pogDataList != null, pogDataList != "", ((List) pogDataList).isEmpty() != true, pogDataList not contains pgData)
+	then
+		pogProfile.addDppMatchStatus("residentialStatus", 0);
+		//update (pogProfile);
+	end
+	
+rule "update by dpp matcher" salience 99
+lock-on-active true
+	when
+		pogProfile : JsPogProfile()		
+	then		
+		update (pogProfile);
+	end	

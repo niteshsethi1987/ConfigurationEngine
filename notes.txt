@@ -1,0 +1,17 @@
+== Tech Decision ===
+> core to be moved to jar(like orch. jar)
+> exception not fatal in case of join work node
+> Rule for Cumpolsory Fields ---- 
+> Username ....profilechekcsum.... caching..in rule engine
+> Remove print_r from xls.
+
+===== Later ===
+> Redis log on failure
+> Stream api / RX java / akka / java9
+> service locator from controller.
+
+
+
+=== Product ===
+> Pog Name Not Present -- need to handle
+> pog name dr. case    -- seems all cases not covered.

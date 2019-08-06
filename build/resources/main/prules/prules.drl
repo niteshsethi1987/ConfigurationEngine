@@ -1,0 +1,21 @@
+package rules
+ 
+import com.js.profile.services.JsProfile
+import com.js.profile.services.JsImage
+
+rule "Age changer"
+	when 
+	    imageObject: JsImage()
+		productObject: JsProfile(getAge() ==25 && imageObject.getC() == 4)
+	then
+		productObject.setAge(35);
+	end
+rule "Age changer2"
+	when 
+		imageObject: JsImage()
+		productObject: JsProfile(getAge() !=25 && imageObject.getC() == 4)
+	then
+		productObject.setAge(36);
+	end
+	
+	

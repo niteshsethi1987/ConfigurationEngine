@@ -1,0 +1,105 @@
+package rules.profile.show
+
+import com.js.ruleengine.domains.JsProfile
+import com.js.ruleengine.domains.JsPogProfile
+import com.js.ruleengine.domains.JsPgProfile
+import com.js.ruleengine.domains.JsContact
+
+import java.util.ArrayList;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+rule "Mark Profile as Underscreening"
+	when 
+		profileObject: JsPogProfile(getField("bi", "activated") == "U")
+	then
+		profileObject.markUnderScreening();
+		drools.halt();
+	end
+	
+rule "Mark Profile as Deleted - Others"
+	when 
+		profileObject: JsPogProfile(getField("bi", "activated") == "D" && (getField("dl", "backendDelete") == null || getField("dl", "backendDelete") == false || (getField("dl", "backendDelete") == true && Days.daysBetween(new DateTime(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").parse((String) getField("dl", "endTime"))), new DateTime(new Date())).getDays() > 10)))
+	then
+		profileObject.markDeleted();
+		drools.halt();
+	end
+	
+rule "Mark Profile as Deleted - BackendDelete"
+	when 
+		profileObject: JsPogProfile(getField("bi", "activated") == "D", getField("dl", "backendDelete") == true, Days.daysBetween(new DateTime(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").parse((String) getField("dl", "endTime"))), new DateTime(new Date())).getDays() <= 10)
+	then
+		profileObject.markBackendDeleted();
+		drools.halt();
+	end
+	
+rule "Mark Profile as Not activated"	
+	when 
+		profileObject: JsPogProfile(getField("bi", "activated") == "N")
+	then
+		profileObject.markNotActivated();
+		drools.halt();
+	end
+	
+rule "Mark Profile as Hidden"
+	when 
+		profileObject: JsPogProfile(getField("bi", "activated") == "H")
+	then
+		profileObject.markHidden();
+		drools.halt();
+	end
+	
+rule "Mark Profile as DPP Filtered"
+	when 
+		JsContact ((getField("state") != "RI" && != "A" && != "RA" && != "D" && != "C"))
+		profileObject: JsPogProfile(getField("bi", "privacy") == "F")
+		JsPogProfile((getField("fl", "age") == true && age: getDppMatchStatus("age") == 0) 
+				|| (getField("fl", "mstatus") == true && mstatus: getDppMatchStatus("mstatus") == 0)
+				|| (getField("fl", "religion") == true && religion: getDppMatchStatus("religion") == 0)
+				|| (getField("fl", "caste") == true && caste: getDppMatchStatus("caste") == 0)
+				|| (getField("fl", "countryRes") == true && country: getDppMatchStatus("country") == 0)
+				|| (getField("fl", "cityRes") == true && state: getDppMatchStatus("stateCity") == 0)
+				|| (getField("fl", "mtongue") == true && mtongue: getDppMatchStatus("mtongue") == 0)
+				|| (getField("fl", "income") == true && income: getDppMatchStatus("income") == 0)
+			)
+	then
+		profileObject.markDppFiltered();
+		drools.halt();
+	end
+	
+rule "Mark Profile as show to contacted only"
+	when 
+		JsContact (getField("state") == null)
+		profileObject: JsPogProfile(getField("bi", "privacy") == "C")
+	then
+		profileObject.markContactPrivacy();
+		drools.halt();
+	end
+	
+rule "Mark Profile as notActivated if empty"
+	when 
+		profileObject: JsPogProfile(getField("bi", "activated") == "" || == null)
+	then
+		profileObject.markNotActivated();
+		drools.halt();
+	end
+	
+rule "Login Must Case - NotLoggedIn + (Privacy=F/R/C or photo_display = C)"
+	when		
+		not JsPgProfile()		
+		profileObject  : JsPogProfile(getField("bi", "privacy") == "F" ||  == "R" || == "C")
+	then
+		profileObject.markLoginMust();
+		drools.halt();
+	end
+	
+rule "Mark Profile as ignored/blocked"
+	when 
+		profileObject: JsPogProfile()
+		contactObject: JsContact(getField("pogBlDt") != null)
+	then
+		profileObject.markBlocked();
+		drools.halt();
+	end

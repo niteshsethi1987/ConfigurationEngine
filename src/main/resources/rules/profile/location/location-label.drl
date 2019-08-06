@@ -1,0 +1,84 @@
+package rules.profile.location
+ 
+import com.js.ruleengine.domains.JsPogProfile
+
+/**
+ * First part of the location label
+ */
+rule "Current CityRes - India"
+	when 
+		pogProfile: JsPogProfile(city: ((String) getField("lo", "cityRes")), country: getField("lo", "countryRes"))
+		String (this != null, this != "", this.endsWith("OT") == false) from city
+		Integer (this == 51) from country
+	then
+		pogProfile.addOrUpdateField(city, "lo", "current");
+		pogProfile.addOrUpdateField("city", "lo", "current-type");
+	end 
+	
+rule "Current CityRes - outside India"
+	when 
+		pogProfile: JsPogProfile(city: ((String) getField("lo", "cityRes")), country: getField("lo", "countryRes"))
+		String (this != null, this != "", this.endsWith("OT") == false) from city
+		Integer (this != 51) from country
+	then
+		pogProfile.addOrUpdateField(city + "," + country, "lo", "current");
+		pogProfile.addOrUpdateField("city-country", "lo", "current-type");
+	end 
+
+rule "Current State"
+	when 
+		pogProfile: JsPogProfile(city: ((String) getField("lo", "cityRes")) == null || == "" || city.endsWith("OT") == true, state: getField("lo", "stateRes"))
+		String (this != null, this != "") from state
+	then
+		pogProfile.addOrUpdateField(state, "lo", "current");
+		pogProfile.addOrUpdateField("state", "lo", "current-type");
+	end
+
+rule "Current Country"	
+	when 
+		pogProfile: JsPogProfile(city: getField("lo", "cityRes") == null || == "", state: getField("lo", "stateRes") == null ||  == "", country: getField("lo", "countryRes"))
+	then
+		pogProfile.addOrUpdateField(country, "lo", "current");
+		pogProfile.addOrUpdateField("country", "lo", "current-type");
+	end
+	
+/**
+ * Second part of the location label
+ */
+rule "Native City"
+	when
+		pogProfile: JsPogProfile(nCity: getField("lo", "nativeCity"), cCity: getField("lo", "cityRes"), cState: getField("lo", "stateRes"))
+		String (this != null, this != "", this != "0", this != cCity, this != cState) from nCity
+	then
+		pogProfile.addOrUpdateField(nCity, "lo", "native");
+		pogProfile.addOrUpdateField("city", "lo", "native-type");
+	end 
+	
+rule "Native State"
+	when
+		pogProfile: JsPogProfile(nCity: getField("lo", "nativeCity") == null || == "" || == "0", nState: getField("lo", "nativeState"), ancestral: getField("lo", "ancestralOrigin") == null || == "" || getField("sc", "ancestralOrigin") == false, cState: getField("lo", "stateRes"))
+		String (this != null, this != "", this != cState) from nState
+	then
+		pogProfile.addOrUpdateField(nState, "lo", "native");
+		pogProfile.addOrUpdateField("state", "lo", "native-type");
+	end
+
+rule "Ancestral Origin - Native State"
+	when
+		pogProfile: JsPogProfile(nCity: getField("lo", "nativeCity") == null || == "" || == "0", nState: getField("lo", "nativeState"), ancestral: getField("lo", "ancestralOrigin"), anoScreened: getField("sc", "ancestralOrigin") == true, cState: getField("lo", "stateRes"))
+		String (this != null, this != "", this != cState) from nState
+		String (this != null, this != "") from ancestral
+	then
+		pogProfile.addOrUpdateField(ancestral + ", " + nState, "lo", "native");
+		pogProfile.addOrUpdateField("ancestral", "lo", "native-type");
+	end
+/*
+rule "Native State - Others"
+	when
+		pogProfile: JsPogProfile(nCity: getField("lo", "nci") == "0", nState: getField("lo", "nst"), cState: getField("lo", "st"))
+		String (this != null, this != "", this != cState) from nState
+	then
+		pogProfile.addOrUpdateField(nState + "-Others", "lo", "na");
+		pogProfile.addOrUpdateField("others", "lo", "na-t");
+	end
+*/

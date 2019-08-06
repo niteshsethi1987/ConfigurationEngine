@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Appconfig.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JsRuleEngine</a> &gt; <a href="index.source.html" class="el_package">com.js.core</a> &gt; <span class="el_source">Appconfig.java</span></div><h1>Appconfig.java</h1><pre class="source lang-java linenums">package com.js.core;
+
+import static com.google.common.collect.Lists.newArrayList;
+import static springfox.documentation.schema.AlternateTypeRules.newRule;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.TimeZone;
+
+import org.eclipse.jetty.server.Handler;
+import org.eclipse.jetty.server.NCSARequestLog;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.HandlerCollection;
+import org.eclipse.jetty.server.handler.RequestLogHandler;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
+import org.springframework.boot.context.embedded.jetty.JettyEmbeddedServletContainerFactory;
+import org.springframework.boot.context.embedded.jetty.JettyServerCustomizer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.context.request.async.DeferredResult;
+
+import com.fasterxml.classmate.TypeResolver;
+
+import ch.qos.logback.access.jetty.RequestLogImpl;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.builders.ResponseMessageBuilder;
+import springfox.documentation.schema.ModelRef;
+import springfox.documentation.schema.WildcardType;
+import springfox.documentation.service.ApiKey;
+import springfox.documentation.service.AuthorizationScope;
+import springfox.documentation.service.SecurityReference;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger.web.SecurityConfiguration;
+import springfox.documentation.swagger.web.UiConfiguration;
+
+//@EnableRetry
+@Configuration
+<span class="fc" id="L45">public class Appconfig {</span>
+	@Bean
+	public Docket petApi() {
+<span class="fc" id="L48">		return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.any())</span>
+<span class="fc" id="L49">				.paths(PathSelectors.any()).build().pathMapping(&quot;/&quot;)</span>
+<span class="fc" id="L50">				.directModelSubstitute(LocalDate.class, String.class).genericModelSubstitutes(ResponseEntity.class)</span>
+<span class="fc" id="L51">				.alternateTypeRules(newRule(</span>
+<span class="fc" id="L52">						typeResolver.resolve(DeferredResult.class,</span>
+<span class="fc" id="L53">								typeResolver.resolve(ResponseEntity.class, WildcardType.class)),</span>
+<span class="fc" id="L54">						typeResolver.resolve(WildcardType.class)))</span>
+<span class="fc" id="L55">				.useDefaultResponseMessages(false)</span>
+<span class="fc" id="L56">				.globalResponseMessage(RequestMethod.GET,</span>
+<span class="fc" id="L57">						newArrayList(new ResponseMessageBuilder().code(500).message(&quot;500 message&quot;)</span>
+<span class="fc" id="L58">								.responseModel(new ModelRef(&quot;Error&quot;)).build()))</span>
+<span class="fc" id="L59">				.securitySchemes(newArrayList(apiKey())).securityContexts(newArrayList(securityContext()));</span>
+	}
+	
+	@Bean
+	public Jackson2ObjectMapperBuilderCustomizer jacksonObjectMapperCustomization() {
+<span class="fc" id="L64">	    return jacksonObjectMapperBuilder -&gt; jacksonObjectMapperBuilder.timeZone(TimeZone.getTimeZone(&quot;IST&quot;));</span>
+	}
+
+	@Autowired
+	private TypeResolver typeResolver;
+
+	private ApiKey apiKey() {
+<span class="fc" id="L71">		return new ApiKey(&quot;mykey&quot;, &quot;api_key&quot;, &quot;header&quot;);</span>
+	}
+
+	private SecurityContext securityContext() {
+<span class="fc" id="L75">		return SecurityContext.builder().securityReferences(defaultAuth()).forPaths(PathSelectors.regex(&quot;/anyPath.*&quot;))</span>
+<span class="fc" id="L76">				.build();</span>
+	}
+
+	List&lt;SecurityReference&gt; defaultAuth() {
+<span class="fc" id="L80">		AuthorizationScope authorizationScope = new AuthorizationScope(&quot;global&quot;, &quot;accessEverything&quot;);</span>
+<span class="fc" id="L81">		AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];</span>
+<span class="fc" id="L82">		authorizationScopes[0] = authorizationScope;</span>
+<span class="fc" id="L83">		return newArrayList(new SecurityReference(&quot;mykey&quot;, authorizationScopes));</span>
+	}
+
+	@Bean
+	SecurityConfiguration security() {
+<span class="fc" id="L88">		return new SecurityConfiguration(&quot;test-app-client-id&quot;, &quot;test-app-realm&quot;, &quot;test-app&quot;, &quot;apiKey&quot;);</span>
+	}
+
+	@Bean
+	UiConfiguration uiConfig() {
+<span class="fc" id="L93">		return new UiConfiguration(&quot;validatorUrl&quot;);</span>
+	}
+
+	// @Bean
+	// public EmbeddedServletContainerFactory jettyConfigBean() {
+	// JettyEmbeddedServletContainerFactory jef = new
+	// JettyEmbeddedServletContainerFactory();
+	// jef.addServerCustomizers(new JettyServerCustomizer() {
+	//
+	// @Override
+	// public void customize(Server server) {
+	// HandlerCollection handlers = new HandlerCollection();
+	// for (Handler handler : server.getHandlers()) {
+	// handlers.addHandler(handler);
+	// }
+	//// RequestLogHandler reqLogs = new RequestLogHandler();
+	//// NCSARequestLog reqLogImpl = new
+	// NCSARequestLog(&quot;/projects/logs/access2-yyyy_mm_dd.log&quot;);
+	//// reqLogImpl.setRetainDays(30);
+	//// reqLogImpl.setAppend(true);
+	//// reqLogImpl.setExtended(false);
+	//// reqLogImpl.setLogTimeZone(&quot;GMT&quot;);
+	//// reqLogImpl.setLogServer(true);
+	//// reqLogImpl.setLogLatency(true);
+	//// reqLogs.setRequestLog(reqLogImpl);
+	//// handlers.addHandler(reqLogs);
+	//// server.setHandler(handlers);
+	//
+	// // For Jetty 9.3+, use the following
+	// RequestLogHandler reqLogs = new RequestLogHandler();
+	// reqLogs.setServer(server);
+	// RequestLogImpl rli = new RequestLogImpl();
+	// rli.setResource(&quot;calsspath:logback-access.xml&quot;);
+	// rli.setQuiet(false);
+	// rli.start();
+	// reqLogs.setRequestLog(rli);
+	//
+	// handlers.addHandler(reqLogs);
+	// server.setHandler(handlers);
+	// }
+	// });
+	// return jef;
+	// }
+
+	// @Bean
+	// public JettyEmbeddedServletContainerFactory
+	// jettyEmbeddedServletContainerFactory(
+	// @Value(&quot;${server.port:8080}&quot;) final String mainPort,
+	// @Value(&quot;${server.nonsecured.port}&quot;) final String nonsecuredPort) {
+	//
+	// final JettyEmbeddedServletContainerFactory factory = new
+	// JettyEmbeddedServletContainerFactory(
+	// Integer.valueOf(mainPort));
+	//
+	// // Add customized Jetty configuration with non blocking connection
+	// // handler
+	// factory.addServerCustomizers(new JettyServerCustomizer() {
+	// @Override
+	// public void customize(final Server server) {
+	// final NetworkTrafficServerConnector connector = new
+	// NetworkTrafficServerConnector(server);
+	// connector.setPort(Integer.valueOf(nonsecuredPort));
+	// server.addConnector(connector);
+	// }
+	// });
+	// return factory;
+	// }
+
+	// @Bean
+	// public RetryTemplate retryTemplate() {
+	// RetryTemplate retryTemplate = new RetryTemplate();
+	//
+	// FixedBackOffPolicy fixedBackOffPolicy = new FixedBackOffPolicy();
+	// fixedBackOffPolicy.setBackOffPeriod(2000l);
+	// retryTemplate.setBackOffPolicy(fixedBackOffPolicy);
+	//
+	// SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy();
+	// retryPolicy.setMaxAttempts(20);
+	//
+	// retryTemplate.setRetryPolicy(retryPolicy);
+	//
+	// return retryTemplate;
+	// }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

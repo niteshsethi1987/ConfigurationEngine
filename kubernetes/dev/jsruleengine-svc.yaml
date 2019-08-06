@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+  name: jsruleengine-v1-service
+  namespace: "jsruleengine-dev"
+  labels:
+spec:
+  type: NodePort
+  ports:
+  - port: 8790
+    targetPort: 8790
+    name: port8790
+    nodePort: 31080
+
+  selector:
+    app: jsruleengine
+    deployversion: "v1"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+  name: jsruleengine-v2-service
+  namespace: "jsruleengine-dev"
+  labels:
+spec:
+  type: NodePort
+  ports:
+  - port: 8790
+    targetPort: 8790
+    name: port8790
+    nodePort: 31081
+
+  selector:
+    app: jsruleengine
+    deployversion: "v2"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+  name: jsruleengine-v3-service
+  namespace: "jsruleengine-dev"
+  labels:
+spec:
+  type: NodePort
+  ports:
+  - port: 8790
+    targetPort: 8790
+    name: port8790
+    nodePort: 31083
+
+  selector:
+    app: jsruleengine
+    deployversion: "v3"
+

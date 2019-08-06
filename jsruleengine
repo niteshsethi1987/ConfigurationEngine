@@ -1,0 +1,218 @@
+#!/bin/bash
+
+service_name='jsprofile';
+## Value in seconds
+graceful_termination_max_wait=10;
+
+present_working_dir=`pwd`;
+script_location=`dirname "$(readlink -f "$0")"`;
+
+cd $script_location;
+
+source ./deploy.conf
+
+JAVA_OPTS="$JAVA_OPTS ${java_opts}"
+
+function getServicePid {
+	echo `pgrep -f ${script_location}/${service_name}.jar`
+}
+
+## 0 program is running or service is OK
+## 3 program is stopped
+function status {
+	service_running_pid=$(getServicePid);
+	if [ "x$service_running_pid" != "x" ]; then
+		echo "Found ${service_name} service running with pid ${service_running_pid}";
+		return 0;
+	fi
+	echo "${service_name} is not running.."
+	return 3;
+}
+
+function maintenance_mode_on {
+	if [ "x$lb_present" != "xtrue" ]; then
+		return;
+	fi
+	echo ""
+	echo "Putting ${lb_backend_group}/${lb_node_label} to MAINT mode using ${lb_host}:${lb_port}"
+	echo "disable server ${lb_backend_group}/${lb_node_label}" | nc ${lb_host} ${lb_port}
+}
+
+function maintenance_mode_off {
+	if [ "x$lb_present" != "xtrue" ]; then
+		return;
+	fi
+	echo ""
+	echo "Bringing ${lb_backend_group}/${lb_node_label} back from MAINT mode using ${lb_host}:${lb_port}"
+	echo "enable server ${lb_backend_group}/${lb_node_label}" | nc ${lb_host} ${lb_port}
+}
+
+function silent_start() {
+	## If already running
+	pid=$(getServicePid);
+	if [ "x$pid" != "x" ]; then
+		return -1;
+	fi
+
+	## Enabling remote debug
+	if [ "x$remote_debug_enable" == "xtrue" ]; then
+		if [ "x$remote_debug_port" == "x" ]; then
+			echo "Remote debug is enabled but remote_debug_port is not set. Aborting script..";
+			return 2;
+		else 
+			JAVA_OPTS="$JAVA_OPTS -Xdebug -Xrunjdwp:server=y,suspend=n,transport=dt_socket,address=${remote_debug_port}"
+			echo ""
+			echo "Remote debug enabled at port ${remote_debug_port}"
+			echo ""
+		fi
+	fi
+	JAVA_OPTS="$JAVA_OPTS -Dspring.profiles.active=${environment}"
+	
+	#if [ -f "./application.properties" ]; then
+	#	SPRING_OPTS="$SPRING_OPTS --spring.config.location=application.properties"
+	#fi
+	
+	if [ "x$jdk_home" == "x" ]; then
+		JAVA_CMD="java";
+	else
+		JAVA_CMD="$jdk_home/bin/java"
+	fi
+	
+	echo "Java version information"
+	$JAVA_CMD -version
+	
+	if [ -f "${service_name}.out" ]; then
+		mkdir -p "stdout_archive"
+		now=`date '+%Y%m%d_%H%M%S'`
+		mv "${service_name}.out" "./stdout_archive/${service_name}.out.${now}"
+	fi
+	
+	service_start_cmd="${JAVA_CMD} ${JAVA_OPTS} -jar $script_location/$service_name.jar ${SPRING_OPTS}"
+	
+	echo ""
+	echo "Starting service with command -"
+	echo "$service_start_cmd"
+	
+	nohup $service_start_cmd > ${service_name}.out 2>&1 &
+	
+	pid=$!
+	echo ""
+	echo "Starting ${service_name} service with pid [$pid]"
+	echo ""
+	
+	echo "Waiting to see it started.."
+	while [ "x$started_msg" == "x" ]; do
+	        started_msg=`grep -i -b1 "Started \(Application\|${service_name}\)" ${service_name}.out`
+	        sleep 1;
+	done
+	echo "======================================================================================"
+	echo "$started_msg"
+	echo "= ${service_name} service started successfully with pid [$pid]"
+	echo "======================================================================================"
+	return 0;
+}
+
+function start {
+	echo "==================================================="
+	echo "= Running script to start ${service_name} service"
+	echo "==================================================="
+	
+	## If already running
+	pid=$(getServicePid);
+	if [ "x$pid" != "x" ]; then
+		echo "${service_name} already running at pid [$pid]. Aborting script.."
+		return 1;
+	fi
+	
+	silent_start;
+}
+
+function stop {
+	echo "========================================================="
+	echo "= Running script to shutdown ${service_name} service.."
+	echo "========================================================="
+	
+	## If already running
+	pid=$(getServicePid);
+	if [ "x$pid" == "x" ]; then
+		echo "${service_name} service is not running.."
+		return 1;
+	fi
+	
+	echo ""
+	echo "Found ${service_name} service running with pid [${pid}]"
+	echo "Waiting for 3 seconds to allow connection draining" && sleep 3
+	echo "Sending SIGKILL to pid [${pid}]"
+	kill $pid
+	
+	echo ""
+	echo "Waiting for ${graceful_termination_max_wait} seconds to shutdown ${service_name} service gracefully.."
+	
+	count=$graceful_termination_max_wait
+	while [ $count -gt 0 ]
+	do
+		pid=$(getServicePid);
+		if [ "x$pid" == "x" ]; then
+			break;
+		fi
+		echo "Waiting for graceful shutdown.."
+		sleep 1;
+		(( count-- ))
+	done;
+	
+	pid=$(getServicePid);
+	if [ "x$pid" != "x" ]; then
+		echo "${service_name} is still running after ${graceful_termination_max_wait} seconds. Sending SIGKILL for forced termination."
+		kill -9 $pid
+	fi
+	
+	echo "========================================================="
+	echo "= ${service_name} shutdown complete."
+	echo "========================================================="
+}
+
+function version {
+	unzip -p ${service_name}.jar META-INF/MANIFEST.MF 2>/dev/null | grep -i '^js' | sort
+}
+
+function usage {
+	echo "Usage: ${0} {start|stop|restart|status|activatenode|deactivatenode|version}"
+}
+
+case "$1" in
+	start)
+		start
+		maintenance_mode_off
+		;;
+	silentstart)
+		silent_start
+		;;
+	stop)
+		maintenance_mode_on
+		stop
+		;;
+	restart)
+		maintenance_mode_on
+		stop
+		start
+		maintenance_mode_off
+		;;
+	status)
+		status
+		;;
+	activatenode)
+		maintenance_mode_off
+		;;
+	deactivatenode)
+		maintenance_mode_on
+		;;
+	version)
+		version
+		;;
+	*)
+		echo "Invalid Argument !"
+		usage
+esac
+
+cd $present_working_dir
+

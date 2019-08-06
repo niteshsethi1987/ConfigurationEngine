@@ -1,0 +1,50 @@
+package rules.profile.dp
+ 
+import com.js.ruleengine.domains.JsProfile
+import com.js.ruleengine.domains.JsPogProfile
+import com.js.ruleengine.domains.JsPgProfile
+
+/*
+rule "Remove Screened Photos If There are No Profile Photo"
+	when
+		pgProfile  : JsPgProfile(pgId : getField("bi", "id"))    	
+    	pogObject: JsPogProfile(getField("bi","id") != pgId) 
+		pogObject1: JsPogProfile(getField("phs","items",0,"ordering") != 0)
+	then				
+		pogObject.delField("aph");
+	end
+*/	
+rule "Remove NonScreened Photos If viewer is not viewing his/her profile" salience -100
+	when 		 
+		pgProfile  : JsPgProfile(pgId : getField("bi", "profileid"))    	
+    	pogObject: JsPogProfile(getField("bi","profileid") != pgId)     	    	
+	then		
+		pogObject.removeUnscreenedPhotos();
+	end
+	
+rule "set profile photo - others (logged in)"
+	when 
+		//pogObject: JsPogProfile(getField("aph","items",0,"ordering") == 0)
+		pogObject1: JsPogProfile(checkOrderingPhoto("onlyScreened"))
+		pgProfile  : JsPgProfile(pgId : getField("bi", "profileid"))    	
+    	pogObject: JsPogProfile(getField("bi","profileid") != pgId) 		
+	then				
+		pogObject.copyFieldAtRoot("dp","aph","items",0);		
+	end
+	
+rule "set profile photo - others (logged out)"
+	when 
+		pogObject: JsPogProfile(checkOrderingPhoto("onlyScreened"))
+		not JsPgProfile()    	
+	then				
+		pogObject.copyFieldAtRoot("dp","aph","items",0);		
+	end
+	
+rule "set profile photo - self"
+	when 		
+		pogObject1: JsPogProfile(checkOrderingPhoto("doesNotMatter"))
+		pgProfile  : JsPgProfile(pgId : getField("bi", "profileid"))    	
+    	pogObject: JsPogProfile(getField("bi","profileid") == pgId) 		
+	then				
+		pogObject.copyFieldAtRoot("dp","aph","items",0);		
+	end			

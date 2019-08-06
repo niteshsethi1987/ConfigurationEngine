@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Serializer.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JsRuleEngine</a> &gt; <a href="index.source.html" class="el_package">com.js.common.utils</a> &gt; <span class="el_source">Serializer.java</span></div><h1>Serializer.java</h1><pre class="source lang-java linenums">/**
+ * 
+ */
+package com.js.common.utils;
+
+/**
+ * @author goutam.mandal
+ *
+ */
+public interface Serializer&lt;O&gt; {
+	
+	public O serialize(Object object);
+
+	public &lt;I&gt; I deserialize(O object, Class&lt;? extends I&gt; clazz);
+
+<span class="nc" id="L16">	public enum FieldNameFormat {</span>
+		/**
+		 * e.g., &quot;lowerCamel&quot;.
+		 */
+<span class="nc" id="L20">		CAMEL_CASE,</span>
+
+		/**
+		 * e.g., &quot;UPPER_UNDERSCORE&quot;.
+		 */
+<span class="nc" id="L25">		UPPERCASE_UNDERSCORE, ;</span>
+	}
+
+<span class="nc" id="L28">	public enum NullPolicy {</span>
+		/**
+		 * Value = null
+		 */
+<span class="nc" id="L32">		NULL,</span>
+
+		/**
+		 * Value = &quot;null&quot;
+		 */
+<span class="nc" id="L37">		@Deprecated</span>
+		NULL_STRING,
+
+		/**
+		 * Value = &quot;&quot;
+		 */
+<span class="nc" id="L43">		@Deprecated</span>
+		EMPTY_STRING,
+
+		/**
+		 * Field will not appear in resulting Json
+		 */
+<span class="nc" id="L49">		OMIT_FIELD, ;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

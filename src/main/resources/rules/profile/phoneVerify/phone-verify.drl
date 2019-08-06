@@ -1,0 +1,15 @@
+package rules.profile.phoneVerify
+ 
+import com.js.ruleengine.domains.JsProfile
+import com.js.ruleengine.domains.JsPgProfile
+
+rule "Phone Verfied"
+	when 
+		pgObject  : JsPgProfile(getField("bi", "mobStatus") != "Y",getField("bi", "landlStatus") != "Y",
+		getField("ci", "altMobileStatus") != true)
+	then
+		// Skipped for live issue :: viewerData fields null in JsAggregator
+		// pgObject.markNotPhoneVerfied();
+	end
+
+	

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>HttpConfiguration.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JsRuleEngine</a> &gt; <a href="index.source.html" class="el_package">com.js.configs</a> &gt; <span class="el_source">HttpConfiguration.java</span></div><h1>HttpConfiguration.java</h1><pre class="source lang-java linenums">package com.js.configs;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.ws.rs.core.MediaType;
+
+import lombok.Getter;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.http.Header;
+import org.apache.http.HttpException;
+import org.apache.http.HttpHeaders;
+import org.apache.http.HttpHost;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpRequestInterceptor;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.conn.routing.HttpRoute;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.protocol.HttpContext;
+import org.slf4j.MDC;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.web.client.RestTemplate;
+
+/**
+ * Configuration class for generating {@link RestTemplate}
+ * with default parameters
+ * @author goutam.mandal
+ *
+ */
+@Configuration
+@ConfigurationProperties
+<span class="fc" id="L41">public class HttpConfiguration {</span>
+
+<span class="nc" id="L43">	@Getter</span>
+	@Value(&quot;${service.image.url}&quot;)
+	protected String	imageUrl;
+
+	@Value(&quot;${service.image.connection.timeout}&quot;)
+	protected int		imageTimeoutConnection;
+
+	@Value(&quot;${service.image.receive.timeout}&quot;)
+	protected int		imageTimeoutReceive;
+
+	@Value(&quot;${service.image.routes.max}&quot;)
+	protected int		imageRoutesMax;
+	
+<span class="nc" id="L56">	@Getter</span>
+	@Value(&quot;${service.label.url}&quot;)
+	protected String	labelUrl;
+
+	private PoolingHttpClientConnectionManager poolingHttpClientConnectionManager() {
+
+<span class="fc" id="L62">		PoolingHttpClientConnectionManager manager = new PoolingHttpClientConnectionManager();</span>
+<span class="fc" id="L63">		manager.setMaxTotal(100);</span>
+<span class="fc" id="L64">		manager.setDefaultMaxPerRoute(30);</span>
+
+<span class="fc" id="L66">		String[] imageUrlParts = imageUrl.split(&quot;://|:&quot;);</span>
+<span class="fc" id="L67">		HttpHost imageHost = new HttpHost(imageUrlParts[1], Integer.parseInt(imageUrlParts[2]), imageUrlParts[0]);</span>
+<span class="fc" id="L68">		manager.setMaxPerRoute(new HttpRoute(imageHost), imageRoutesMax);</span>
+
+<span class="fc" id="L70">		return manager;</span>
+	}
+
+	private RequestConfig defaultRequestConfig() {
+
+		/**
+		 * Connection Timeout – time to establish the connection with the remote host
+		 * Socket Timeout – time waiting for data after the connection was established; 
+		 * 					maximum time of inactivity between two data packets
+		 * Connection Request Timeout – time to wait for a connection from the connection manager/pool
+		 */
+		// TODO
+<span class="fc" id="L82">		return RequestConfig.custom().setConnectTimeout(2000000).setSocketTimeout(5000000).setConnectionRequestTimeout(300000).build();</span>
+	}
+
+	private List&lt;Header&gt; defaultHeaders() {
+
+<span class="fc" id="L87">		List&lt;Header&gt; headers = new ArrayList&lt;&gt;();</span>
+
+		//headers.add(new BasicHeader(&quot;JS-Raw-Data&quot;, String.valueOf(true)));
+<span class="fc" id="L90">		headers.add(new BasicHeader(&quot;JS-Internal&quot;, String.valueOf(true)));</span>
+<span class="fc" id="L91">		headers.add(new BasicHeader(&quot;JS-User-Agent&quot;, &quot;JsProfile&quot;)); // TODO</span>
+<span class="fc" id="L92">		headers.add(new BasicHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));</span>
+
+<span class="fc" id="L94">		return headers;</span>
+	}
+
+	private HttpRequestInterceptor getRequestIdInterceptor() {
+
+<span class="fc" id="L99">		return new HttpRequestInterceptor() {</span>
+
+			@Override
+			public void process(HttpRequest request, HttpContext context) throws HttpException, IOException {
+<span class="nc" id="L103">				String requestId = MDC.get(&quot;requestId&quot;);</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">				if (!StringUtils.isEmpty(requestId)) {</span>
+<span class="nc" id="L105">					request.setHeader(new BasicHeader(&quot;JS-Request-Id&quot;, requestId));</span>
+				}
+
+<span class="nc" id="L108">			}</span>
+		};
+	}
+
+	private CloseableHttpClient httpClient() {
+
+<span class="fc" id="L114">		return HttpClientBuilder.create().setConnectionManager(poolingHttpClientConnectionManager())</span>
+<span class="fc" id="L115">				.setDefaultRequestConfig(defaultRequestConfig()).setDefaultHeaders(defaultHeaders()) // Setting them during req creation adds them as comma separated values</span>
+<span class="fc" id="L116">				.addInterceptorLast(getRequestIdInterceptor()) // Setting them during req creation does not add/override</span>
+<span class="fc" id="L117">				.build();</span>
+	}
+
+	@Bean
+	public RestTemplate restTemplate() {
+<span class="fc" id="L122">		return new RestTemplate(new HttpComponentsClientHttpRequestFactory(httpClient()));</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

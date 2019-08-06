@@ -1,0 +1,59 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  namespace: "jsruleengine-dev"
+  name: jsruleengine-v1-config
+  labels:
+    name: main-applicatoin-config
+    team: all
+    environment: "dev"
+data:
+  service.profile.url: "http://192.168.225.68:31060"
+  aerospike.hosts: "172.16.3.187"
+  aerospike.ports: "3000"
+  service.membership.url: "http://192.168.225.68:31004"
+  service.contact.url: "http://192.168.225.68:31040"
+  service.auth.url: "http://192.168.225.68:31030"
+  service.presence.url: "http://192.168.225.68:31050"
+
+  
+---
+
+
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  namespace: "jsruleengine-dev"
+  name: jsruleengine-v2-config
+  labels:
+    name: main-applicatoin-config
+    team: all
+    environment: "dev"
+data:
+  service.profile.url: "http://192.168.225.68:31061"
+  aerospike.hosts: "172.16.3.187"
+  aerospike.ports: "3000"
+  service.membership.url: "http://192.168.225.68:31007"
+  service.contact.url: "http://192.168.225.68:31040"
+  service.auth.url: "http://192.168.225.68:31030"
+  service.presence.url: "http://192.168.225.68:31050"
+
+---
+
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  namespace: "jsruleengine-dev"
+  name: jsruleengine-v3-config
+  labels:
+    name: main-applicatoin-config
+    team: all
+    environment: "dev"
+data:
+  service.profile.url: "http://192.168.225.68:31062"
+  aerospike.hosts: "172.16.3.187"
+  aerospike.ports: "3000"
+  service.membership.url: "http://192.168.225.68:31008"
+  service.contact.url: "http://192.168.225.68:31040"
+  service.auth.url: "http://192.168.225.68:31030"
+  service.presence.url: "http://192.168.225.68:31050"

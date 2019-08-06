@@ -1,0 +1,176 @@
+buildscript {
+
+	ext {
+		springBootVersion = '1.5.6.RELEASE'
+	}
+
+    repositories {
+        mavenCentral()
+        maven {
+      		url "https://plugins.gradle.org/m2/"
+    	}        
+    }
+    
+    dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	    classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.5"
+	    classpath("com.github.samueltbrown:gradle-cucumber-plugin:0.9")
+	}
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://repo.spring.io/libs-snapshot'
+    }
+    maven {
+        url  "http://dl.bintray.com/dmahapatro/plugins"
+    } 
+    maven {
+        url 'http://172.16.3.185:8081/artifactory/gradle-dev-local'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'jacoco'
+apply plugin: 'org.sonarqube'
+apply plugin: 'com.github.samueltbrown.cucumber'
+
+jar {	
+    baseName = rootProject.name.toLowerCase()
+	//version =  '0.1.0'
+    version = null
+    
+    manifest {
+        attributes 'Main-Class': 'Application'
+        attributes 'JS-Service-Name': rootProject.name
+		attributes 'JS-Build-Date': new Date()
+		attributes 'JS-CI-Url': System.getenv('JOB_URL') ?: 'NA'
+		attributes 'JS-CI-Tag': System.getenv('BUILD_TAG') ?: 'NA'
+		attributes 'JS-Git-Url': System.getenv('GIT_URL') ?: 'NA'
+		attributes 'JS-Git-Branch': System.getenv('GIT_BRANCH') ?: 'NA'
+		attributes 'JS-Git-Commit': System.getenv('GIT_COMMIT') ?: 'NA'
+    }
+}
+
+springBoot {
+    executable = true
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+
+
+dependencies {
+	compile('com.js.orchestration:JsOrchestration:1.0.+')
+	compile("org.springframework.boot:spring-boot-starter-actuator")
+	compile("org.jolokia:jolokia-core")
+	//compile("org.springframework.boot:spring-boot-devtools")
+	// tag::jetty[]
+	compile("org.springframework.boot:spring-boot-starter-web") {
+        exclude module: "spring-boot-starter-tomcat"
+    }
+    compile("org.springframework.boot:spring-boot-starter-jetty")
+    // end::jetty[]
+    
+	compile('org.springframework.boot:spring-boot-starter-jersey')
+    
+	compile('org.springframework.boot:spring-boot-starter-hateoas')
+	//compile('org.apache.cxf:cxf-rt-rs-client:3.1.7')
+    compile 'com.google.code.gson:gson:2.2.4'
+    
+    compile("io.springfox:springfox-swagger2:2.0.2")
+    compile("io.springfox:springfox-swagger-ui:2.0.2")
+    
+    compile("org.kie:kie-ci:6.5.0.Final")
+    compile("org.drools:drools-decisiontables:6.5.0.Final")
+    
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+    
+    testCompile("junit:junit")
+	testCompile("org.springframework.boot:spring-boot-starter-test")
+	
+	compile 'org.projectlombok:lombok:1.16.18'
+	
+	compile group: 'io.rest-assured', name: 'rest-assured', version: '3.0.3'
+    compile group: 'io.rest-assured', name: 'json-schema-validator', version: '3.0.3'
+	 
+	testCompile("info.cukes:cucumber-spring:1.2.2")
+	testCompile("info.cukes:cucumber-java8:1.2.2")
+	testCompile("info.cukes:cucumber-junit:1.2.2")
+	compile('org.springframework.data:spring-data-commons')
+    compile('com.aerospike:spring-data-aerospike:1.0.2.RELEASE')
+}
+
+eclipse {
+    classpath {
+        containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
+        containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8'
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectName", "Java :: JsProfile :: SonarQube Scanner for Gradle"
+        property "sonar.projectKey", "org.sonarqube:JsProfile"
+        property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
+    }
+}
+allprojects {
+  ext.baseVersion = "0.1"
+  ext.snapshotVersion = true
+
+  group = "org.sonarqube"
+  version = "$baseVersion" + (snapshotVersion ? "-SNAPSHOT" : "")
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+}
+
+test {
+  ignoreFailures = true
+}
+
+test.finalizedBy jacocoTestReport
+
+task cleanDist(type: Delete) {
+    delete fileTree('build/dist') {
+        include '**/*'
+    }
+}
+
+task CopyTask(type: Copy) {    
+    from('build/libs'){
+		include '*.jar'
+	}
+    from('.') {
+    	include 'application*.properties'
+    }
+    from 'logback.xml'
+    from 'jsprofile'
+    into 'build/dist'
+}
+
+task distZip(type: Zip, dependsOn: 'CopyTask') {
+   from 'build/dist'
+   exclude '*.zip'
+   archiveName 'build.zip'
+   destinationDir = file('build/dist')
+}
+
+cucumber {
+    formats = ['pretty', 'json:build/cucumber/cucumber.json', 'junit:build/cucumber/cucumber.xml', 'html:build/cucumber/html']
+    tags = ['~@Ignore']
+}

@@ -1,0 +1,12 @@
+package rules.profile.dp
+ 
+import com.js.ruleengine.domains.JsProfile
+import com.js.ruleengine.domains.JsPogProfile
+import com.js.ruleengine.domains.JsPgProfile
+
+rule "If current yourinfo is under screening, replace it with previous version"
+	when
+    	pogObject: JsPogProfile(getField("sc", "yourinfo") == false, yio: getField("yo", "yourInfoOld")) 
+	then
+		pogObject.addOrUpdateField(yio, "bi", "yourinfo");
+	end

@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Main-Class: Application
+JS-Service-Name: JsRuleEngine
+JS-Build-Date: Fri Mar 16 14:35:11 IST 2018
+JS-CI-Url: NA
+JS-CI-Tag: NA
+JS-Git-Url: NA
+JS-Git-Branch: NA
+JS-Git-Commit: NA
+

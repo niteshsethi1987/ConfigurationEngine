@@ -1,0 +1,177 @@
+package rules.profile.commstarter
+
+import static com.js.common.utils.ConditionHelperUtil.*;
+
+import java.util.List;
+import com.js.ruleengine.domains.JsPogProfile
+import com.js.ruleengine.domains.JsPgProfile
+
+rule "Conversational starter hobbies"
+	when
+		pgProfile : JsPgProfile(pgDataList: getField("li", "hobby"))
+		pogProfile: JsPogProfile(pogDataList: getField("li", "hobby"),pogDataList != null,pgDataList != null,eval(isIntersecting((List)pogDataList, (List)pgDataList)))
+		
+	then
+		//System.out.println("hobbies");
+		//System.out.println(pogDataList);
+		//System.out.println(pgDataList);
+		pogProfile.addOrUpdateField(pogProfile.getIntersection((List)pogDataList,(List)pgDataList), "csi", "hobby");
+	end
+
+rule "Conversational starter music"
+	when
+		
+		pgProfile : JsPgProfile(pgDataList: getField("li", "music"))
+		pogProfile: JsPogProfile(pogDataList: getField("li", "music"),pogDataList != null,pgDataList != null,eval(isIntersecting((List)pogDataList, (List)pgDataList)))
+		
+	then
+		//System.out.println("music");
+		//System.out.println(pogDataList);
+		//System.out.println(pgDataList);
+		pogProfile.addOrUpdateField(pogProfile.getIntersection((List)pogDataList,(List)pgDataList), "csi", "music");
+	end
+
+rule "Conversational starter interest"
+	when
+		pgProfile : JsPgProfile(pgDataList: getField("li", "interest"))
+		pogProfile: JsPogProfile(pogDataList: getField("li", "interest"),pogDataList != null,pgDataList != null,eval(isIntersecting((List)pogDataList, (List)pgDataList)))
+		
+	then
+		//System.out.println("interest");
+		//System.out.println(pogDataList);
+		//System.out.println(pgDataList);
+		pogProfile.addOrUpdateField(pogProfile.getIntersection((List)pogDataList,(List)pgDataList), "csi", "interest");
+	end
+
+
+rule "Conversational starter sports"
+	when
+		pgProfile : JsPgProfile(pgDataList: getField("li", "interest"))
+		pogProfile: JsPogProfile(pogDataList: getField("li", "interest"),pogDataList != null,pgDataList != null,eval(isIntersecting((List)pogDataList, (List)pgDataList)))
+		
+	then
+		//System.out.println("sports");
+		//System.out.println(pogDataList);
+		//System.out.println(pgDataList);
+		pogProfile.addOrUpdateField(pogProfile.getIntersection((List)pogDataList,(List)pgDataList), "csi", "interest");
+	end																																																																																									
+
+rule "Conversational starter book"
+	when
+		pgProfile : JsPgProfile(pgDataList: getField("li", "book"))
+		pogProfile: JsPogProfile(pogDataList: getField("li", "book"),pogDataList != null,pgDataList != null,eval(isIntersecting((List)pogDataList, (List)pgDataList)))
+		
+	then
+		//System.out.println("book");
+		//System.out.println(pogDataList);
+		//System.out.println(pgDataList);
+		pogProfile.addOrUpdateField(pogProfile.getIntersection((List)pogDataList,(List)pgDataList), "csi", "book");
+	end
+
+rule "Conversational starter diet"
+	when
+		pgProfile : JsPgProfile(pgDataList: getField("li", "diet"))
+		pogProfile: JsPogProfile(pogDataList: getField("li", "diet"),pogDataList != null,pgDataList != null,pgDataList== pogDataList)
+		
+	then
+		//System.out.println("diet");
+		//System.out.println(pogDataList);
+		//System.out.println(pgDataList);
+		pogProfile.addOrUpdateField(pogDataList, "csi", "diet");
+	end
+
+rule "Conversational starter occupation"
+	when
+		pgProfile : JsPgProfile(pgDataList: getField("ca", "occupation"))
+		pogProfile: JsPogProfile(pogDataList: getField("ca", "occupation"),pogDataList != null,pgDataList != null,pogDataList == pgDataList)
+		
+	then
+		//System.out.println("occupation");
+		//System.out.println(pogDataList);
+		//System.out.println(pgDataList);
+		pogProfile.addOrUpdateField(pogDataList, "csi", "occupation");
+	end
+
+rule "Conversational starter open to pets"
+	when
+		pgProfile : JsPgProfile(pgDataList: getField("li", "openToPet"))
+		pogProfile: JsPogProfile(pogDataList: getField("li", "openToPet"),pogDataList != null,pgDataList != null,pgDataList == pogDataList)
+		
+	then
+		//System.out.println("pets");
+		//System.out.println(pogDataList);
+		//System.out.println(pgDataList);
+		pogProfile.addOrUpdateField(pgDataList, "csi", "openToPet");
+	end
+
+rule "Conversational starter education"
+	when
+		pgProfile : JsPgProfile(pgDataList: getField("ei", "eduLevelNew"))
+		pogProfile: JsPogProfile(pogDataList: getField("ei", "eduLevelNew"),pogDataList != null,pgDataList != null,pogDataList == pgDataList)
+		
+	then
+		//System.out.println("education");
+		//System.out.println(pogDataList);
+		//System.out.println(pgDataList);
+		pogProfile.addOrUpdateField(pgDataList, "csi", "eduLevelNew");
+	end
+
+rule "Conversational starter native state"
+	when
+		pgProfile : JsPgProfile(pgDataList: getField("lo", "nativeState"))
+		pogProfile: JsPogProfile(pogDataList: getField("lo", "nativeState"),pogDataList != null,pgDataList != null,pogDataList == pgDataList)
+		
+	then
+		//System.out.println("nativeState");
+		//System.out.println(pogDataList);
+		//System.out.println(pgDataList);
+		pogProfile.addOrUpdateField(pgDataList, "csi", "nativeState");
+	end
+
+rule "Conversational starter native country"
+	when
+		pgProfile : JsPgProfile(pgDataList: getField("lo", "nativeCountry"))
+		pogProfile: JsPogProfile(pogDataList: getField("lo", "nativeCountry"),pogDataList != null,pgDataList != null,pogDataList == pgDataList)
+		
+	then
+		//System.out.println("nativeCountry");
+		//System.out.println(pogDataList);
+		//System.out.println(pgDataList);
+		pogProfile.addOrUpdateField(pgDataList, "csi", "nativeCountry");
+	end
+
+rule "Conversational starter native city"
+	when
+		pgProfile : JsPgProfile(pgDataList: getField("lo", "nativeCity"))
+		pogProfile: JsPogProfile(pogDataList: getField("lo", "nativeCity"),pogDataList != null,pgDataList != null,pogDataList == pgDataList)
+		
+	then
+		//System.out.println("nci");
+		//System.out.println(pogDataList);
+		//System.out.println(pgDataList);
+		pogProfile.addOrUpdateField(pgDataList, "csi", "nativeCity");
+	end
+
+rule "Conversational starter city residential"
+	when
+		pgProfile : JsPgProfile(pgDataList: getField("lo", "cityRes"))
+		pogProfile: JsPogProfile(pogDataList: getField("lo", "cityRes"),pogDataList != null,pgDataList != null,pogDataList == pgDataList)
+		
+	then
+		//System.out.println("cityRes");
+		//System.out.println(pogDataList);
+		//System.out.println(pgDataList);
+		pogProfile.addOrUpdateField(pgDataList, "csi", "cityRes");
+	end
+
+rule "Conversational starter city residential"
+	when
+		pgProfile : JsPgProfile(pgDataList: getField("ei", "college"))
+		pogProfile: JsPogProfile(pogDataList: getField("ei", "college"),pogDataList != null,pgDataList != null,pogDataList == pgDataList)
+		
+	then
+		//System.out.println("college");
+		//System.out.println(pogDataList);
+		//System.out.println(pgDataList);
+		pogProfile.addOrUpdateField(pgDataList, "csi", "college");
+	end

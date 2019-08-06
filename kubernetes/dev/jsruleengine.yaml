@@ -1,0 +1,107 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: jsruleengine-v1-deployment
+  namespace: "jsruleengine-dev"
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: jsruleengine
+        deployversion: "v1"
+        infra-app-version: "jsruleengine-v1"
+    spec:
+      nodeSelector:
+            js: "true"
+      containers:
+      - name: jsruleengine
+        image: dockerjs.infoedge.com:5000/jsruleengine-dev:v1
+        envFrom:
+        - configMapRef:
+            name: jsruleengine-v1-config
+        env:
+        - name: ENVIRONMENT
+          value: dev
+        - name: SERVICE_NAMESPACE
+          value: jsruleengine-v1-service
+        ports:
+        - containerPort: 8790
+          protocol: TCP
+        imagePullPolicy: Always  
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: jsruleengine-v2-deployment
+  namespace: "jsruleengine-dev"
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: jsruleengine
+        deployversion: "v2"
+        infra-app-version: "jsruleengine-v2"
+    spec:
+      nodeSelector:
+            js: "true"
+      containers:
+      - name: jsruleengine
+        image: dockerjs.infoedge.com:5000/jsruleengine-dev:v2
+        envFrom:
+        - configMapRef:
+            name: jsruleengine-v2-config
+        env:
+        - name: ENVIRONMENT
+          value: dev
+        - name: SERVICE_NAMESPACE
+          value: jsruleengine-v2-service
+        ports:
+        - containerPort: 8790
+          protocol: TCP
+        imagePullPolicy: Always
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: jsruleengine-v3-deployment
+  namespace: "jsruleengine-dev"
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: jsruleengine
+        deployversion: "v3"
+        infra-app-version: "jsruleengine-v3"
+    spec:
+      nodeSelector:
+            js: "true"
+      containers:
+      - name: jsruleengine
+        image: dockerjs.infoedge.com:5000/jsruleengine-dev:v3
+        envFrom:
+        - configMapRef:
+            name: jsruleengine-v3-config
+        env:
+        - name: ENVIRONMENT
+          value: dev
+        - name: SERVICE_NAMESPACE
+          value: jsruleengine-v3-service
+        ports:
+        - containerPort: 8790
+          protocol: TCP
+        imagePullPolicy: Always
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst
+
+

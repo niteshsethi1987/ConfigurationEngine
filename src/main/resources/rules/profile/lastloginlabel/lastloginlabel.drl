@@ -1,0 +1,23 @@
+package rules.profile.lastloginlabel
+ 
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import com.js.ruleengine.domains.JsAuth
+import com.js.ruleengine.domains.JsPogProfile
+import com.js.ruleengine.domains.JsPresence
+
+rule "Put last login label online now"
+	when 
+		JsPresence(getField("online") == true)
+		pogProfile: JsPogProfile()
+	then
+		pogProfile.addOrUpdateField("ONLINE_NOW","last_active");
+	end
+
+rule "Put last login label last login date"
+	when 
+		JsPresence(getField("online") == false, lastLoginDt: getField("time"))
+		pogProfile: JsPogProfile()
+	then
+		pogProfile.addOrUpdateField(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date((long) lastLoginDt)),"last_active");
+	end

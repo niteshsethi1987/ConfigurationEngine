@@ -1,0 +1,5 @@
+
+JsRuleEngine                                                         
+
+${application.title} 
+Ver: ${application.version}

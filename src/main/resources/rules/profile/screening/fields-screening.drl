@@ -1,0 +1,17 @@
+package rules.profile.screening
+ 
+import com.js.ruleengine.domains.JsProfile
+import com.js.ruleengine.domains.JsPogProfile
+import com.js.ruleengine.domains.JsPgProfile
+
+import java.util.Map
+
+rule "Remove unscreened fields"
+when
+    pogObject : JsPogProfile(screening : getMapField("sc"))
+    e : Map.Entry() from screening.entrySet()
+    screeningStatus : Boolean(this == false) from e.getValue()
+    String(this != "yi") from e.getKey()
+then
+    pogObject.nullifyUnscreenedField((String) e.getKey());
+end

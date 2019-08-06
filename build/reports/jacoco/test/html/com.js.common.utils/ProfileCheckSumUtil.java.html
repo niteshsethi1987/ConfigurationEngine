@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ProfileCheckSumUtil.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JsRuleEngine</a> &gt; <a href="index.source.html" class="el_package">com.js.common.utils</a> &gt; <span class="el_source">ProfileCheckSumUtil.java</span></div><h1>ProfileCheckSumUtil.java</h1><pre class="source lang-java linenums">/**
+ * 
+ */
+package com.js.common.utils;
+
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import com.google.common.base.Strings;
+import com.js.common.ValidationException;
+
+/**
+ * @author goutam.mandal
+ */
+public class ProfileCheckSumUtil {
+
+<span class="nc" id="L21">	private ProfileCheckSumUtil() {</span>
+<span class="nc" id="L22">		throw new IllegalStateException(&quot;Utility Class&quot;);</span>
+	}
+
+	public static Integer profileCheckSumToProfileID(String pChecksum) {
+<span class="nc" id="L26">		String profileid = null;</span>
+<span class="nc bnc" id="L27" title="All 2 branches missed.">		if (pChecksum.length() &gt;= 34) {</span>
+<span class="nc" id="L28">			profileid = pChecksum.substring(33);</span>
+			try {
+<span class="nc bnc" id="L30" title="All 2 branches missed.">				if (!pChecksum.equals(profileIDToProfileCheckSum(Integer.valueOf(profileid)))) {</span>
+<span class="nc" id="L31">					throw new ValidationException(&quot;Invalid profile checksum &quot; + pChecksum);</span>
+				}
+			}
+<span class="nc" id="L34">			catch (NumberFormatException e) {</span>
+<span class="nc" id="L35">				throw new ValidationException(&quot;Invalid profile profileId &quot; + profileid, e);</span>
+<span class="nc" id="L36">			}</span>
+		} else {
+<span class="nc" id="L38">			profileid = pChecksum;</span>
+		}
+		try {
+<span class="nc" id="L41">			return Integer.valueOf(profileid);</span>
+		}
+<span class="nc" id="L43">		catch (NumberFormatException e) {</span>
+<span class="nc" id="L44">			throw new ValidationException(&quot;Invalid profile profileId &quot; + profileid, e);</span>
+		}
+	}
+
+	public static Map&lt;String, Integer&gt; profileCheckSumToProfileID(Collection&lt;String&gt; pChecksums) {
+<span class="nc" id="L49">		Map&lt;String, Integer&gt; profiles = new LinkedHashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">		if (pChecksums != null) {</span>
+<span class="nc bnc" id="L51" title="All 2 branches missed.">			for (String pChecksum : pChecksums) {</span>
+<span class="nc" id="L52">				profiles.put(pChecksum, profileCheckSumToProfileID(pChecksum));</span>
+<span class="nc" id="L53">			}</span>
+		}
+<span class="nc" id="L55">		return profiles;</span>
+	}
+
+	public static String profileIDToProfileCheckSum(Integer profileId) {
+		try {
+<span class="nc" id="L60">			MessageDigest md5 = MessageDigest.getInstance(&quot;MD5&quot;);</span>
+<span class="nc" id="L61">			md5.update(StandardCharsets.UTF_8.encode(String.valueOf(profileId)));</span>
+<span class="nc" id="L62">			return String.format(&quot;%032x&quot;, new BigInteger(1, md5.digest())) + &quot;i&quot; + profileId;</span>
+		}
+<span class="nc" id="L64">		catch (Exception e) {</span>
+<span class="nc" id="L65">			return &quot;&quot;;</span>
+		}
+	}
+
+	public static Map&lt;Integer, String&gt; profileIDToProfileCheckSum(Collection&lt;Integer&gt; profileIds) {
+<span class="nc" id="L70">		Map&lt;Integer, String&gt; profiles = new LinkedHashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">		if (profileIds != null) {</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">			for (Integer profileId : profileIds) {</span>
+<span class="nc" id="L73">				profiles.put(profileId, profileIDToProfileCheckSum(profileId));</span>
+<span class="nc" id="L74">			}</span>
+		}
+<span class="nc" id="L76">		return profiles;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

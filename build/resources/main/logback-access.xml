@@ -1,0 +1,18 @@
+<!DOCTYPE configuration>
+
+<configuration>
+
+	<property name="LOG_PATH" value="/projects/logs" />
+	
+	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
+		<file>${LOG_PATH}/jsprofile_access.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_PATH}/jsprofile_access.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+		</rollingPolicy>
+		<encoder>
+			<!-- <pattern>%h %l %u [%t] "%r" %s %b "%i{Referer}" "%i{User-Agent}"</pattern> -->
+			<pattern>combined</pattern> 
+		</encoder>
+	</appender>
+	<appender-ref ref="FILE" />
+</configuration>

@@ -1,0 +1,50 @@
+package rules.profile.show
+ 
+import com.js.ruleengine.domains.JsPogProfile
+
+/*
+	Place of Birth (lo, cb)
+	Kalyan, Maharashtra, India
+	
+	Date of Birth (bi, dob)
+	Sep 27, 1975
+	
+	Time of Birth (ai, bt)
+	06 hrs:10 mins
+	
+	Horoscope match is not necessary (ai, hm)
+	
+	Sun sign (ai, ss)
+	Libra
+	
+	Rashi/Moon Sign (ai, ra)
+	Vrishabh
+	
+	Nakshatra (ai, nk)
+	Rohini
+	
+	Manglik (ai, mg)
+	Non-Manglik
+*/
+rule "Hide All Horoscope Details"
+	when 
+		profileObject: JsPogProfile(getField("ai", "showHoroscope") == "D") // hide all horoscope details
+	then
+		//profileObject.nullifyField("bi", "dtofbirth");
+		profileObject.nullifyField("lo", "cityBirth");
+		profileObject.nullifyField("ai", "btime");
+		profileObject.nullifyField("ai", "horoscopeMatch");
+		profileObject.nullifyField("ai", "sunsign");
+		profileObject.nullifyField("ai", "rashi");
+		profileObject.nullifyField("ai", "nakshatra");
+		profileObject.nullifyField("ai", "manglik");
+		//profileObject.nullifyField("ai", "ki");
+	end
+/*
+rule "Hide only Horoscope"
+	when 
+		profileObject: JsPogProfile(getField("ai", "sh") == "N" || == "D") // hide all horoscope details
+	then
+		profileObject.nullifyField("ai", "ki");
+	end
+*/
